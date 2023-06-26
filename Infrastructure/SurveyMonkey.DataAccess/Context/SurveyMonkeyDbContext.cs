@@ -49,14 +49,14 @@ namespace SurveyMonkey.DataAccess.Context
 
             modelBuilder.Entity<Choice>(entity =>
             {
-                entity.HasOne(c => c.Question)
+                entity.HasOne<Question>()
                       .WithMany(q => q.Choices)
                       .HasForeignKey(c=>c.QuestionId).OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Question>(entity =>
             {
-                entity.HasOne(q => q.Survey).WithMany(a => a.Questions).HasForeignKey(q => q.SurveyId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne<Survey>().WithMany(a => a.Questions).HasForeignKey(q => q.SurveyId).OnDelete(DeleteBehavior.Cascade);
                 entity.HasOne(q => q.QuestionType).WithMany().HasForeignKey(q => q.QuestionTypeId);
             });
 

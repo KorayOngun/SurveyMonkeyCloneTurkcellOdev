@@ -13,7 +13,7 @@ namespace SurveyMonkey.Entities
         public string Text { get; set; }
 
         public int SurveyId { get; set; }
-        public Survey? Survey { get; set; }
+        
 
         public int QuestionTypeId { get; set; }
         public QuestionType? QuestionType { get; set; }

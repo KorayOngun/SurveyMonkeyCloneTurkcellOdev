@@ -8,6 +8,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\SurveyMonkey.DataAccess\SurveyMonkey.DataAccess.csproj" />
+    <ProjectReference Include="..\SurveyMonkey.DataTransferObject\SurveyMonkey.DataTransferObject.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
   </ItemGroup>
 
 </Project>

@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\SurveyMonkey.Entities\SurveyMonkey.Entities.csproj" />
+  </ItemGroup>
+
 </Project>
