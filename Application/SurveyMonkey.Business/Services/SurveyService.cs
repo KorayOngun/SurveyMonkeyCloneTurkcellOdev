@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using SurveyMonkey.Business.IServices;
 using SurveyMonkey.DataAccess.IRepos;
+using SurveyMonkey.DataTransferObject.Request;
 using SurveyMonkey.DataTransferObject.Response;
+using SurveyMonkey.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +21,12 @@ namespace SurveyMonkey.Business.Services
         {
             _repo = repo;
             _mapper = mapper;
+        }
+
+        public async Task CreateSurveyAsync(SurveyCreateRequest survey)
+        {
+            var item = _mapper.Map<Survey>(survey);
+            await _repo.CreateAsync(item);
         }
 
         public async Task<SurveyResponse> GetSurveyByIdAsync(int id)

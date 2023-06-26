@@ -26,7 +26,7 @@ namespace SurveyMonkey.DataAccess.Context
             {
                 entity.HasKey("ChoiceId", "QuestionId", "AnswerId");
 
-                entity.HasOne(e => e.Answer)
+                entity.HasOne<Answer>()
                       .WithMany(a => a.MultiChoiceAnswer)
                       .HasForeignKey(e => e.AnswerId).OnDelete(DeleteBehavior.ClientSetNull);
                 
@@ -39,7 +39,7 @@ namespace SurveyMonkey.DataAccess.Context
             {
                 entity.HasKey("QuestionId", "AnswerId");
 
-                entity.HasOne(e => e.Answer)
+                entity.HasOne<Answer>()
                       .WithMany(a => a.SingleChoiceAnswer)
                       .HasForeignKey(e => e.AnswerId).OnDelete(DeleteBehavior.Cascade);
 
@@ -66,7 +66,7 @@ namespace SurveyMonkey.DataAccess.Context
             });
             modelBuilder.Entity<Answer>(entity =>
             {
-                entity.HasOne(a => a.Survey).WithMany(s => s.Answers).HasForeignKey(a => a.SurveyId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne<Survey>().WithMany(s => s.Answers).HasForeignKey(a => a.SurveyId).OnDelete(DeleteBehavior.Cascade);
 
             });
 

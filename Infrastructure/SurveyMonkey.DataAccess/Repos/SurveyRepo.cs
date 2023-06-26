@@ -53,6 +53,7 @@ namespace SurveyMonkey.DataAccess.Repos
             var item = await _context.Surveys.Where(item => item.Id == id).AsNoTracking()
                                         .Include(s => s.Questions).ThenInclude(q => q.Choices)
                                         .Include(s => s.Questions).ThenInclude(q => q.QuestionType)
+                                        .Include(s=>s.User)
                                         .FirstOrDefaultAsync();
            
             return item;

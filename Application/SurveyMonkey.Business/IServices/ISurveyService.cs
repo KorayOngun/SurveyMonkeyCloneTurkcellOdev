@@ -1,4 +1,6 @@
-﻿using SurveyMonkey.DataTransferObject.Response;
+﻿using SurveyMonkey.DataTransferObject.Request;
+using SurveyMonkey.DataTransferObject.Response;
+using SurveyMonkey.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +11,8 @@ namespace SurveyMonkey.Business.IServices
 {
     public interface ISurveyService
     {
-        Task<SurveyResponse> GetSurveyByIdAsync(int id);    
+        Task<SurveyResponse> GetSurveyByIdAsync(int id);
 
-        // TODO : 01 anket oluşturmayı yap.
+        Task CreateSurveyAsync(SurveyCreateRequest survey);
     }
 }

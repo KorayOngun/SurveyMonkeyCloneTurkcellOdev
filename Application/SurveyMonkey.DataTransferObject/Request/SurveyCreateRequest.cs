@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SurveyMonkey.DataTransferObject.Response
+namespace SurveyMonkey.DataTransferObject.Request
 {
-    public class SurveyResponse : IDto
+    public class SurveyCreateRequest
     {
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; set; }
         public DateTime CreateDate { get; set; }
-        public string UserName { get; set; } = string.Empty;    
+        public int UserId { get; set; }
         public IList<Question> Questions { get; set; } = new List<Question>();
     }
 }

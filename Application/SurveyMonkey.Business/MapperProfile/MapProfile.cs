@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.Features;
+using SurveyMonkey.DataTransferObject.Request;
 using SurveyMonkey.DataTransferObject.Response;
 using SurveyMonkey.Entities;
 using System;
@@ -16,6 +17,7 @@ namespace SurveyMonkey.Business.MapperProfile
         {
 
             CreateMap<Survey, SurveyResponse>().ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name));
+            CreateMap<SurveyCreateRequest, Survey>();
         }
     }
 }
