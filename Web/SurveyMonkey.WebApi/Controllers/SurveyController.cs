@@ -19,13 +19,19 @@ namespace SurveyMonkey.WebApi.Controllers
             _surveyService = surveyService;
         }
 
-        [HttpGet]
-        public async Task<SurveyResponse> Get(int id) 
+        [HttpGet("[action]")]
+        public async Task<SurveyResponse> GetSurvey(int id) 
         {
             var item = await _surveyService.GetSurveyByIdAsync(id);
             return item;
         }
-        [HttpPost]
+        [HttpGet("[action]")]
+        public async Task<SurveyReportResponse> GetReportData(int id)
+        {
+            var item = await _surveyService.GetReportAsync(id);
+            return item;
+        }
+        [HttpPost("[action]")]
         public async Task<IActionResult> Create(SurveyCreateRequest survey)
         {
            await  _surveyService.CreateSurveyAsync(survey);

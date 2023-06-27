@@ -12,8 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddJsonOptions(x =>
-                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 builder.Services.AddScoped<ISurveyRepo,SurveyRepo>();
@@ -21,7 +20,8 @@ builder.Services.AddScoped<ISurveyService,SurveyService>();
 builder.Services.AddDbContext<SurveyMonkeyDbContext>();
 
 
-builder.Services.AddAutoMapper(typeof(MapProfile));
+builder.Services.AddAutoMapper(typeof(MapProfileDto));
+builder.Services.AddAutoMapper(typeof(MapProfileVirtualDto));
 
 
 builder.Services.AddEndpointsApiExplorer();
@@ -38,6 +38,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

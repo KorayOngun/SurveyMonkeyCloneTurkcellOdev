@@ -11,7 +11,6 @@ namespace SurveyMonkey.Entities
         public int Id { get; set; }
         public int SurveyId { get; set; }
        
-
         public IList<MultiChoiceAnswer> MultiChoiceAnswer { get; set; } = new List<MultiChoiceAnswer>();
         public IList<SingleChoiceAnswer> SingleChoiceAnswer { get; set; } = new List<SingleChoiceAnswer>();
 

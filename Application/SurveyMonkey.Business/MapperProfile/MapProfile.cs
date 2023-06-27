@@ -11,12 +11,21 @@ using System.Threading.Tasks;
 
 namespace SurveyMonkey.Business.MapperProfile
 {
-    public class MapProfile : Profile
+    public class MapProfileDto : Profile
     {
-        public MapProfile()
+        public MapProfileDto()
         {
 
-            CreateMap<Survey, SurveyResponse>().ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name));
+            CreateMap<Survey, SurveyResponse>()
+                                              .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name));
+                                            
+           
+            
+
+            CreateMap<Survey, SurveyReportResponse>();
+
+            
+
             CreateMap<SurveyCreateRequest, Survey>();
         }
     }

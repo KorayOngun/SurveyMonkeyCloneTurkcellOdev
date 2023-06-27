@@ -29,6 +29,12 @@ namespace SurveyMonkey.Business.Services
             await _repo.CreateAsync(item);
         }
 
+        public async Task<SurveyReportResponse> GetReportAsync(int id)
+        {
+            var item = await _repo.GetByIdForReportAsync(id);
+            return _mapper.Map<SurveyReportResponse>(item);
+        }
+
         public async Task<SurveyResponse> GetSurveyByIdAsync(int id)
         {
             var item = await _repo.GetByIdAsync(id);

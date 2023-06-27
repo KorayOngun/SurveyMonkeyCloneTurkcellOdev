@@ -30,8 +30,8 @@ namespace SurveyMonkey.DataAccess.Context
                       .WithMany(a => a.MultiChoiceAnswer)
                       .HasForeignKey(e => e.AnswerId).OnDelete(DeleteBehavior.ClientSetNull);
                 
-                entity.HasOne(m=>m.Question).WithMany().HasForeignKey(e => e.QuestionId).OnDelete(DeleteBehavior.ClientSetNull);
-                entity.HasOne(m=>m.Choice).WithMany().HasForeignKey(e => e.ChoiceId).OnDelete(DeleteBehavior.ClientSetNull);
+                entity.HasOne<Question>().WithMany().HasForeignKey(e => e.QuestionId).OnDelete(DeleteBehavior.ClientSetNull);
+                entity.HasOne<Choice>().WithMany().HasForeignKey(e => e.ChoiceId).OnDelete(DeleteBehavior.ClientSetNull);
             });
 
 
@@ -43,8 +43,8 @@ namespace SurveyMonkey.DataAccess.Context
                       .WithMany(a => a.SingleChoiceAnswer)
                       .HasForeignKey(e => e.AnswerId).OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne(s=>s.Question).WithMany().HasForeignKey(e => e.QuestionId).OnDelete(DeleteBehavior.ClientSetNull);
-                entity.HasOne(s=>s.Choice).WithMany().HasForeignKey(e => e.ChoiceId).OnDelete(DeleteBehavior.ClientSetNull);
+                entity.HasOne<Question>().WithMany().HasForeignKey(e => e.QuestionId).OnDelete(DeleteBehavior.ClientSetNull);
+                entity.HasOne<Choice>().WithMany().HasForeignKey(e => e.ChoiceId).OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<Choice>(entity =>
@@ -57,7 +57,7 @@ namespace SurveyMonkey.DataAccess.Context
             modelBuilder.Entity<Question>(entity =>
             {
                 entity.HasOne<Survey>().WithMany(a => a.Questions).HasForeignKey(q => q.SurveyId).OnDelete(DeleteBehavior.Cascade);
-                entity.HasOne(q => q.QuestionType).WithMany().HasForeignKey(q => q.QuestionTypeId);
+                entity.HasOne(q=>q.QuestionType).WithMany().HasForeignKey(q => q.QuestionTypeId);
             });
 
             modelBuilder.Entity<Survey>(entity =>
