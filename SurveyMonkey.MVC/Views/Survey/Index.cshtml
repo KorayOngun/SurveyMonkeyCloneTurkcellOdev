@@ -1,0 +1,15 @@
+﻿@using SurveyMonkey.DataTransferObject.Response;
+
+@{
+    ViewData["Title"] = "Index";
+}
+@model SurveyResponse;
+<h1> @Model.Name</h1>
+
+@foreach(var question in Model.Questions)
+{
+    <div class="row">
+
+    </div>
+}
+
