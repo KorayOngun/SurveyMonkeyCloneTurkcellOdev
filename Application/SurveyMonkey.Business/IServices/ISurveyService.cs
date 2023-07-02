@@ -13,7 +13,7 @@ namespace SurveyMonkey.Business.IServices
     {
         Task<SurveyResponse> GetSurveyByIdAsync(int id);
 
-        Task CreateSurveyAsync(SurveyCreateRequest survey);
+        Task<int> CreateSurveyAsync(SurveyCreateRequest survey);
         Task<SurveyReportResponse> GetReportAsync(int id);
     }
 }

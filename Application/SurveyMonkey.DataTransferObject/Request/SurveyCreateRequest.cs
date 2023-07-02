@@ -10,9 +10,9 @@ namespace SurveyMonkey.DataTransferObject.Request
     public class SurveyCreateRequest
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public DateTime CreateDate { get; set; }
         public int UserId { get; set; }
-        public IList<Question> Questions { get; set; } = new List<Question>();
+        public string Name { get; set; }
+        public DateTime CreateDate { get; set; } = DateTime.Now;
+        public IList<QuestionForSurveyCreateRequest> Questions { get; set; } = new List<QuestionForSurveyCreateRequest>();
     }
 }

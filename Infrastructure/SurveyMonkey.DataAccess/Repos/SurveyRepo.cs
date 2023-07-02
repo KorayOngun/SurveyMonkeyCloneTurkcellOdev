@@ -63,11 +63,29 @@ namespace SurveyMonkey.DataAccess.Repos
         {
             var item = await _context.Surveys.Where(item => item.Id == id).AsNoTracking()
                                       .Include(s => s.Questions).ThenInclude(q => q.Choices)
-                                      .Include(s=>s.Answers).ThenInclude(a=>a.SingleChoiceAnswer)
-                                      .Include(s=>s.Answers).ThenInclude(a=>a.MultiChoiceAnswer)
+                                      //.Include(s => s.Answers).ThenInclude(a => a.SingleChoiceAnswer)
+                                      //.Include(s => s.Answers).ThenInclude(a => a.MultiChoiceAnswer)                                     
                                       .FirstOrDefaultAsync();
 
             return item;
+        }
+        public async Task<int> GetCountParticipant(int id)
+        {
+            var count = await _context.Answers.CountAsync(a => a.SurveyId == id);
+            return count;
+        }
+        public async Task<int> GetCountChoice(int choiceId,int questionType)
+        {
+            int count = 0;  
+            if (questionType==1)
+            {
+                count = await _context.SingleChoiceAnswers.CountAsync(s=>s.ChoiceId == choiceId);
+            }
+            else
+            {
+                count = await _context.MultiChoiceAnswers.CountAsync(s =>s.ChoiceId == choiceId);
+            }
+            return count;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SurveyMonkey.DataTransferObject.Request;
 using SurveyMonkey.DataTransferObject.Response;
 using SurveyMonkey.Entities;
 using System;
@@ -14,6 +15,9 @@ namespace SurveyMonkey.Business.MapperProfile
         public MapProfileVirtualDto()
         {
             CreateMap<Question, QuestionView>().ForMember(dest => dest.QuestionTypeName, src => src.MapFrom(src => src.QuestionType.Name));
+
+            CreateMap<QuestionForSurveyCreateRequest, Question>();
+            CreateMap<ChoiceForSurveyCreateRequest, Choice>();
         }
     }
 }

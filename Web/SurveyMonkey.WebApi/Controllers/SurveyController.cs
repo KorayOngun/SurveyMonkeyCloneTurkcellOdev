@@ -34,8 +34,8 @@ namespace SurveyMonkey.WebApi.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> Create(SurveyCreateRequest survey)
         {
-           await  _surveyService.CreateSurveyAsync(survey);
-            return Ok(new {id = survey.Id});
+            var id = await  _surveyService.CreateSurveyAsync(survey);
+            return Ok(new { id });
         }
     }
 }

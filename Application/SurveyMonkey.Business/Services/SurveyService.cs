@@ -7,6 +7,7 @@ using SurveyMonkey.DataTransferObject.Response;
 using SurveyMonkey.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,35 +25,43 @@ namespace SurveyMonkey.Business.Services
             _mapper = mapper;
         }
 
-        public async Task CreateSurveyAsync(SurveyCreateRequest survey)
+        public async Task<int> CreateSurveyAsync(SurveyCreateRequest survey)
         {
             var item = _mapper.Map<Survey>(survey);
             await _repo.CreateAsync(item);
+            return item.Id;
         }
 
         public async Task<SurveyReportResponse> GetReportAsync(int id)
         {
+            Stopwatch stopwatch = Stopwatch.StartNew();
             var item = await _repo.GetByIdForReportAsync(id);
-
             SurveyReportResponse report = await generateReport(item);
-
+            stopwatch.Stop();
+            report.Stopwatch = stopwatch;
 
             return report;
         }
 
         private async Task<SurveyReportResponse> generateReport(Survey item)
         {
-
+            
             var survey = new SurveyReportResponse
             {
                 SurveyId = item.Id,
+                Participant = await getParticipant(item.Id),
                 SurveyName = item.Name,
                 Questions = await getQuestions(item)
             };
+            
             return survey;
         }
 
-       
+        private async Task<int> getParticipant(int id)
+        {
+            var count = await _repo.GetCountParticipant(id);
+            return count;
+        }
 
         private async Task<IList<SurveyReportQuestionView>> getQuestions(Survey item)
         {
@@ -61,6 +70,7 @@ namespace SurveyMonkey.Business.Services
             List<SurveyReportQuestionView> questionList = new();
             foreach (var question in item.Questions)
             {
+                
                 questionView = new SurveyReportQuestionView
                 {
                     QuestionId = question.Id,
@@ -73,21 +83,27 @@ namespace SurveyMonkey.Business.Services
                     {
                         ChoiceId = choices.Id,
                         Text = choices.Text,
-                        Count = getCount(choices.Id,item.Answers)
-                    };
+                        Count = await countToAnswers(choices.Id, question.QuestionTypeId)
+                        
+                };
+                    
                     questionView.Choices.Add(choicesView);
                 }
+                
                 questionList.Add(questionView);
-            }
+            }            
             return questionList;
         }
 
-        private int getCount(int id, ICollection<Answer> answers)
+    
+
+        private async Task<int> countToAnswers(int choiceId,int questionType)
         {
-            var answer = answers.First(); 
-                var count = Math.Max(answer.SingleChoiceAnswer.Count(c=>c.ChoiceId==id),answer.MultiChoiceAnswer.Count(c=>c.ChoiceId==id));
+            var count = await  _repo.GetCountChoice(choiceId, questionType);
             return count;
         }
+
+      
 
         public async Task<SurveyResponse> GetSurveyByIdAsync(int id)
         {
