@@ -6,10 +6,43 @@
 @model SurveyResponse;
 <h1> @Model.Name</h1>
 
-@foreach(var question in Model.Questions)
-{
-    <div class="row">
+<form asp-controller="home" asp-action="index" method="post">
+    @foreach (var item in Model.Questions)
+    {
 
-    </div>
-}
+        if (item.QuestionTypeId == 1)
+        {
+            <div class="form-control">
+                <label class="form-label">@item.Text</label>
+
+                @foreach (var chose in item.Choices)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="@item.Id" value="@chose.Id" >
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            @chose.Text
+                        </label>
+                    </div>
+                }
+            </div>
+        }
+        else if (item.QuestionTypeId == 2)
+        {
+            <div class="form-control">
+                <label class="form-label">@item.Text</label>
+
+                @foreach (var chose in item.Choices)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="@item.Id" value="@chose.Text">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            @chose.Text
+                        </label>
+                    </div>
+                }
+            </div>
+        }
+    }
+    <input type="submit" value="kaydet" />
+</form>
 

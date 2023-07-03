@@ -17,5 +17,13 @@ namespace SurveyMonkey.MVC.Controllers
             var data = await _surveyService.GetSurveyByIdAsync(id);
             return View(data);
         }
+
+
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any ,NoStore =false)]
+        public async Task<IActionResult> Report(int id)
+        {
+            var data = await _surveyService.GetReportAsync(id);
+            return View(data);
+        }
     }
 }

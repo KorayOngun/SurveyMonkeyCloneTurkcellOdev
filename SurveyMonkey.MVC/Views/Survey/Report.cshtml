@@ -1,0 +1,55 @@
+﻿@model SurveyMonkey.DataTransferObject.Response.SurveyReportResponse
+
+@{
+    ViewData["Title"] = "Report";
+}
+
+<h1>@Model.SurveyName anketi</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SurveyId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SurveyId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Participant)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Participant)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SurveyName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SurveyName)
+        </dd>
+        <dt class="col-sm-2">
+            Anket oluşturulma süresi
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Stopwatch.ElapsedMilliseconds) ms
+        </dd>
+        @foreach (var question in Model.Questions)
+        {
+            <div class ="m-3">
+                <div class="row">
+                    @question.Text
+                </div>
+                @foreach (var choice in question.Choices)
+                {
+                    <dt class="col-sm-2">
+                        @choice.Text
+                    </dt>
+                    <dd class="col-sm-10">
+                        @choice.Count seçim
+                    </dd>
+                }
+            </div>  
+        }
+    </dl>
+</div>
+

@@ -16,9 +16,11 @@ builder.Services.AddScoped<ISurveyService, SurveyService>();
 builder.Services.AddDbContext<SurveyMonkeyDbContext>();
 
 
+
 builder.Services.AddAutoMapper(typeof(MapProfileDto));
 builder.Services.AddAutoMapper(typeof(MapProfileVirtualDto));
 
+builder.Services.AddResponseCaching();
 
 var app = builder.Build();
 
@@ -35,10 +37,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseResponseCaching();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=survey}/{action=Index}/{id=2}");
+    pattern: "{controller=survey}/{action=report}/{id=2}");
 
 app.Run();
