@@ -12,7 +12,7 @@ namespace SurveyMonkey.DataTransferObject.Response
     {
         public int SurveyId { get; set; }
         public Stopwatch Stopwatch { get; set; }
-        public int Participant { get; set; }
+        public int Participant { get; set; } 
         public string SurveyName { get; set; }
         public IList<SurveyReportQuestionView> Questions { get; set; }
     }

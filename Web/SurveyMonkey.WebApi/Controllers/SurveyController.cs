@@ -35,7 +35,8 @@ namespace SurveyMonkey.WebApi.Controllers
         public async Task<IActionResult> Create(SurveyCreateRequest survey)
         {
             var id = await  _surveyService.CreateSurveyAsync(survey);
-            return Ok(new { id });
+            string path = "https://localhost:7104/survey/index?id=" + id.ToString();
+            return Created(path, survey);
         }
     }
 }

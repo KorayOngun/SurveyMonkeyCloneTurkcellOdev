@@ -9,22 +9,22 @@
 <div>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SurveyId)
+        <dt class="col-sm-2">
+            anket id'si
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.SurveyId)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Participant)
+        <dt class="col-sm-2">
+           katılımcı sayısı
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Participant)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SurveyName)
+        <dt class="col-sm-2">
+            anket adı
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.SurveyName)
         </dd>
         <dt class="col-sm-2">
@@ -35,20 +35,25 @@
         </dd>
         @foreach (var question in Model.Questions)
         {
-            <div class ="m-3">
-                <div class="row">
+            <div class="m-3" >
+                <div class="row bg-info bg-opacity-20" style="text-align:center">
                     @question.Text
                 </div>
                 @foreach (var choice in question.Choices)
                 {
-                    <dt class="col-sm-2">
-                        @choice.Text
-                    </dt>
-                    <dd class="col-sm-10">
-                        @choice.Count seçim
-                    </dd>
+                    <div class="row">
+                        <dt class="col-sm-2">
+                            @choice.Text
+                        </dt>
+                        <dd class="col-sm-10">
+                            @choice.Count seçim
+                            <br>
+                            @* @(choice.Count*100/Model.Participant)%*@
+                        </dd>
+                    </div>
+
                 }
-            </div>  
+            </div>
         }
     </dl>
 </div>

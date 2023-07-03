@@ -15,6 +15,7 @@ builder.Services.AddScoped<ISurveyRepo, SurveyRepo>();
 builder.Services.AddScoped<ISurveyService, SurveyService>();
 builder.Services.AddDbContext<SurveyMonkeyDbContext>();
 
+// TODO 01: servisleri extension ile oluþtur 
 
 
 builder.Services.AddAutoMapper(typeof(MapProfileDto));
@@ -43,6 +44,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=survey}/{action=report}/{id=2}");
+    pattern: "{controller=survey}/{action=home}/{id?}");
 
 app.Run();

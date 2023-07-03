@@ -19,7 +19,8 @@ namespace SurveyMonkey.MVC.Controllers
         }
 
 
-        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any ,NoStore =false)]
+        
+        //[ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any ,NoStore =false, VaryByQueryKeys =new[] {"id"} )]
         public async Task<IActionResult> Report(int id)
         {
             var data = await _surveyService.GetReportAsync(id);

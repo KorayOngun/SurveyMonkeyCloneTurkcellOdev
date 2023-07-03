@@ -19,6 +19,8 @@ logger.CreateLogger<ResponseTimerMiddleware>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
+// TODO 02: servisleri extension ile olþutur
+
 builder.Services.AddScoped<ISurveyRepo,SurveyRepo>();
 builder.Services.AddScoped<ISurveyService,SurveyService>();
 builder.Services.AddDbContext<SurveyMonkeyDbContext>();
