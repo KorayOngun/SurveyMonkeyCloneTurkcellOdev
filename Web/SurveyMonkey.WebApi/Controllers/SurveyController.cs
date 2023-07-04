@@ -1,11 +1,17 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SurveyMonkey.Business.IServices;
 using SurveyMonkey.DataTransferObject.Request;
 using SurveyMonkey.DataTransferObject.Response;
 using SurveyMonkey.Entities;
+using SurveyMonkey.WebApi.Extension;
+using System.Buffers.Text;
 using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SurveyMonkey.WebApi.Controllers
 {
@@ -32,12 +38,14 @@ namespace SurveyMonkey.WebApi.Controllers
 
         [HttpGet("[action]")]
         [Authorize]
-        public async Task<SurveyReportResponse> GetReportData(int id,string mail)
+        public async Task<SurveyReportResponse> GetReportData(int id)
         {
+            var mail = HttpContext.Request.Headers.GetAuthorizationValues(JwtRegisteredClaimNames.Email);
+            
             var item = await _surveyService.GetReportAsync(id,mail);
             return item;
         }
-
+      
         [HttpPost("[action]")]
         [Authorize]
         public async Task<IActionResult> Create(SurveyCreateRequest survey)
