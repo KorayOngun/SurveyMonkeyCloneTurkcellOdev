@@ -19,7 +19,10 @@ namespace SurveyMonkey.DataAccess.Context
         public DbSet<Survey> Surveys { get; set; }
         public DbSet<User> Users { get; set; }
 
-
+        public SurveyMonkeyDbContext(DbContextOptions<SurveyMonkeyDbContext> option) : base(option)
+        {
+                
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MultiChoiceAnswer>(entity =>
@@ -70,10 +73,6 @@ namespace SurveyMonkey.DataAccess.Context
 
             });
 
-        }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SurveyMonkeyDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
         }
     }
 }

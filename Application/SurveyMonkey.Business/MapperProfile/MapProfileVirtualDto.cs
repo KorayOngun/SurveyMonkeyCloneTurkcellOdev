@@ -16,8 +16,8 @@ namespace SurveyMonkey.Business.MapperProfile
         {
             CreateMap<Question, QuestionView>().ForMember(dest => dest.QuestionTypeName, src => src.MapFrom(src => src.QuestionType.Name));
 
-            CreateMap<QuestionForSurveyCreateRequest, Question>();
-            CreateMap<ChoiceForSurveyCreateRequest, Choice>();
+            CreateMap<QuestionForSurveyCreate, Question>();
+            CreateMap<ChoiceForSurveyCreate, Choice>();
         }
     }
 }

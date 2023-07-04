@@ -59,13 +59,14 @@ namespace SurveyMonkey.DataAccess.Repos
             return item;
         }
 
-        public async Task<Survey> GetByIdForReportAsync(int id)
+        public async Task<Survey> GetByIdForReportAsync(int id, string userMail)
         {
-            var item = await _context.Surveys.Where(item => item.Id == id).AsNoTracking()
-                                      .Include(s => s.Questions).ThenInclude(q => q.Choices)
-                                      //.Include(s => s.Answers).ThenInclude(a => a.SingleChoiceAnswer)
-                                      //.Include(s => s.Answers).ThenInclude(a => a.MultiChoiceAnswer)                                     
-                                      .FirstOrDefaultAsync();
+            var item = await _context.Surveys.AsNoTracking()
+                .Include(s => s.User)
+                .Where(item => item.Id == id && item.User.Email == userMail)
+                .Include(s => s.Questions)
+                .ThenInclude(q => q.Choices)
+                .FirstOrDefaultAsync();
 
             return item;
         }

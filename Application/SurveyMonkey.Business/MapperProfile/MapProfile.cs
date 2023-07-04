@@ -23,10 +23,10 @@ namespace SurveyMonkey.Business.MapperProfile
             
 
             CreateMap<Survey, SurveyReportResponse>();
-
-            
-
             CreateMap<SurveyCreateRequest, Survey>();
+
+            CreateMap<UserLoginRequest, User>();
+
         }
     }
 }

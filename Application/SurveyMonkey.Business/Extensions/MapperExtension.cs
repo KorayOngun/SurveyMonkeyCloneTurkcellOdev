@@ -11,10 +11,15 @@ namespace SurveyMonkey.Business.Extensions
 {
     public static class MapperExtension
     {
+        
         public static T ConvertToDto<T>(this IEntity entity, IMapper mapper) where T : class, IDto, new()
         {
             return mapper.Map<T>(entity);
         }
 
+        public static T ConvertToEntity<T>(this IDto dto,IMapper mapper)  where T: class, IEntity, new()
+        {
+            return mapper.Map<T>(dto);
+        }
     }
 }

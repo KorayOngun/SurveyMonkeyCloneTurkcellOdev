@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SurveyMonkey.Business.IServices;
 using SurveyMonkey.Business.MapperProfile;
 using SurveyMonkey.Business.Services;
@@ -6,7 +9,9 @@ using SurveyMonkey.DataAccess.IRepos;
 using SurveyMonkey.DataAccess.Repos;
 
 using SurveyMonkey.Entities;
+using SurveyMonkey.WebApi.Extension;
 using SurveyMonkey.WebApi.Middlewares;
+using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,23 +21,13 @@ var builder = WebApplication.CreateBuilder(args);
 using var logger =  LoggerFactory.Create(configure => configure.AddSimpleConsole());
 logger.CreateLogger<ResponseTimerMiddleware>();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-
-// TODO 02: servisleri extension ile olþutur
-
-builder.Services.AddScoped<ISurveyRepo,SurveyRepo>();
-builder.Services.AddScoped<ISurveyService,SurveyService>();
-builder.Services.AddDbContext<SurveyMonkeyDbContext>();
+builder.AddInjection();
 
 
-builder.Services.AddAutoMapper(typeof(MapProfileDto));
-builder.Services.AddAutoMapper(typeof(MapProfileVirtualDto));
 
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -5,21 +5,22 @@ using SurveyMonkey.Business.MapperProfile;
 using SurveyMonkey.DataAccess.Context;
 using SurveyMonkey.DataAccess.IRepos;
 using SurveyMonkey.DataAccess.Repos;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using SurveyMonkey.MVC.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<ISurveyRepo, SurveyRepo>();
-builder.Services.AddScoped<ISurveyService, SurveyService>();
-builder.Services.AddDbContext<SurveyMonkeyDbContext>();
+builder.AddInjection();
 
-// TODO 01: servisleri extension ile oluþtur 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
+{
+    opt.LoginPath = "/User/login";
 
-
-builder.Services.AddAutoMapper(typeof(MapProfileDto));
-builder.Services.AddAutoMapper(typeof(MapProfileVirtualDto));
+});
 
 builder.Services.AddResponseCaching();
 
@@ -44,6 +45,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=survey}/{action=home}/{id?}");
+    pattern: "{controller=user}/{action=login}/{id?}");
 
 app.Run();

@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace SurveyMonkey.DataTransferObject.Request
 {
-    public class QuestionForSurveyCreateRequest :IVirtualDto
+    public class QuestionForSurveyCreate :IVirtualDto
     {
         public string Text { get; set; }
         public int QuestionTypeId { get; set; }
-        public IList<ChoiceForSurveyCreateRequest> Choices { get; set; } = new List<ChoiceForSurveyCreateRequest>();
+        public IList<ChoiceForSurveyCreate> Choices { get; set; } = new List<ChoiceForSurveyCreate>();
     }
 }

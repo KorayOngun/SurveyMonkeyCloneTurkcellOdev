@@ -21,8 +21,8 @@ namespace SurveyMonkey.WebApi.Middlewares
 
             timer.Stop();
             _logger.LogInformation(timer.Elapsed.ToString());
-            _logger.LogInformation(timer.ElapsedMilliseconds.ToString());
-            _logger.LogInformation(timer.ElapsedTicks.ToString());
+            _logger.LogInformation(timer.ElapsedMilliseconds.ToString()+" ms");
+            _logger.LogInformation(timer.ElapsedTicks.ToString()+" tick");
         }
     }
 }

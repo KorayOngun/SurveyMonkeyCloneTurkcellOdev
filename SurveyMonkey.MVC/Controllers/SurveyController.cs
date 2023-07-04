@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SurveyMonkey.Business.IServices;
+using System.Security.Claims;
 
 namespace SurveyMonkey.MVC.Controllers
 {
@@ -19,11 +21,13 @@ namespace SurveyMonkey.MVC.Controllers
         }
 
 
-        
-        //[ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any ,NoStore =false, VaryByQueryKeys =new[] {"id"} )]
+        [Authorize]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any ,NoStore =false, VaryByQueryKeys =new[] {"id"} )]
         public async Task<IActionResult> Report(int id)
         {
-            var data = await _surveyService.GetReportAsync(id);
+            
+            var mail = User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
+            var data = await _surveyService.GetReportAsync(id,mail);
             return View(data);
         }
     }

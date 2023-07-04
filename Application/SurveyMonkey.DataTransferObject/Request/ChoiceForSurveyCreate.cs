@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SurveyMonkey.DataTransferObject.Request
 {
-    public class ChoiceForSurveyCreateRequest : IVirtualDto
+    public class ChoiceForSurveyCreate : IVirtualDto
     {
         public string Text { get; set; }
     }

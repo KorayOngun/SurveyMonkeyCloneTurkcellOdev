@@ -1,4 +1,5 @@
 ﻿@using SurveyMonkey.DataTransferObject.Response;
+@using SurveyMonkey.MVC.Services;
 
 @{
     ViewData["Title"] = "Index";
@@ -10,11 +11,10 @@
     @foreach (var item in Model.Questions)
     {
 
-        if (item.QuestionTypeId == 1)
+        if (item.QuestionTypeId == QuestionTypes.SingleChoice)
         {
             <div class="form-control">
                 <label class="form-label">@item.Text</label>
-
                 @foreach (var chose in item.Choices)
                 {
                     <div class="form-check">
@@ -26,7 +26,7 @@
                 }
             </div>
         }
-        else if (item.QuestionTypeId == 2)
+        else if (item.QuestionTypeId == QuestionTypes.MultiChoice)
         {
             <div class="form-control">
                 <label class="form-label">@item.Text</label>

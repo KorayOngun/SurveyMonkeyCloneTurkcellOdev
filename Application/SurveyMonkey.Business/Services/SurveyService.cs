@@ -32,10 +32,10 @@ namespace SurveyMonkey.Business.Services
             return item.Id;
         }
 
-        public async Task<SurveyReportResponse> GetReportAsync(int id)
+        public async Task<SurveyReportResponse> GetReportAsync(int id, string userMail)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            var item = await _repo.GetByIdForReportAsync(id);
+            var item = await _repo.GetByIdForReportAsync(id,userMail);
             SurveyReportResponse report = await generateReport(item);
             stopwatch.Stop();
             report.Stopwatch = stopwatch;
