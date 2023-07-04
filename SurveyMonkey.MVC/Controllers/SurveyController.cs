@@ -17,6 +17,10 @@ namespace SurveyMonkey.MVC.Controllers
         public async Task<IActionResult> Index(int id)
         {
             var data = await _surveyService.GetSurveyByIdAsync(id);
+            if (data == default)
+            {
+                return View("Error","Home");
+            }
             return View(data);
         }
 
@@ -28,6 +32,10 @@ namespace SurveyMonkey.MVC.Controllers
             
             var mail = User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
             var data = await _surveyService.GetReportAsync(id,mail);
+            if (data == default)
+            {
+                return View("Error", "Home");
+            }
             return View(data);
         }
     }

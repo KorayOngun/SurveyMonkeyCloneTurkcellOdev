@@ -38,11 +38,6 @@ namespace SurveyMonkey.WebApi.Controllers
             return item;
         }
 
-
-
-
-        
-
         [HttpPost("[action]")]
         [Authorize]
         public async Task<IActionResult> Create(SurveyCreateRequest survey)

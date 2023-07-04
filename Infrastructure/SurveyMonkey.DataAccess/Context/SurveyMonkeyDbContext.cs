@@ -18,6 +18,8 @@ namespace SurveyMonkey.DataAccess.Context
         public DbSet<SingleChoiceAnswer> SingleChoiceAnswers { get; set; }  
         public DbSet<Survey> Surveys { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<LineAnswer> LineAnswers { get; set; }  
+
 
         public SurveyMonkeyDbContext(DbContextOptions<SurveyMonkeyDbContext> option) : base(option)
         {
@@ -71,6 +73,16 @@ namespace SurveyMonkey.DataAccess.Context
             {
                 entity.HasOne<Survey>().WithMany(s => s.Answers).HasForeignKey(a => a.SurveyId).OnDelete(DeleteBehavior.Cascade);
 
+            });
+
+            modelBuilder.Entity<LineAnswer>(entity =>
+            {
+                entity.HasKey("QuestionId", "AnswerId");
+                entity.HasOne<Answer>()
+                      .WithMany(a => a.lineAnswers)
+                      .HasForeignKey(e => e.AnswerId).OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne<Question>().WithMany().HasForeignKey(e => e.QuestionId).OnDelete(DeleteBehavior.ClientSetNull);
             });
 
         }

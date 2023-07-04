@@ -11,37 +11,57 @@
     @foreach (var item in Model.Questions)
     {
 
-        if (item.QuestionTypeId == QuestionTypes.SingleChoice)
+        switch (item.QuestionTypeId)
         {
-            <div class="form-control">
-                <label class="form-label">@item.Text</label>
-                @foreach (var chose in item.Choices)
-                {
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="@item.Id" value="@chose.Id" >
-                        <label class="form-check-label" for="flexRadioDefault1">
-                            @chose.Text
-                        </label>
-                    </div>
-                }
-            </div>
-        }
-        else if (item.QuestionTypeId == QuestionTypes.MultiChoice)
-        {
-            <div class="form-control">
-                <label class="form-label">@item.Text</label>
+            case QuestionTypes.SingleChoice or QuestionTypes.Rating:
+                <div class="form-control">
+                    <label class="form-label">@item.Text</label>
+                    @foreach (var chose in item.Choices)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="@item.Id" value="@chose.Id">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                @chose.Text
+                            </label>
+                        </div>
+                    }
+                </div>
+                break;
+            case QuestionTypes.MultiChoice:
+                <div class="form-control">
+                    <label class="form-label">@item.Text</label>
 
-                @foreach (var chose in item.Choices)
-                {
+                    @foreach (var chose in item.Choices)
+                    {
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="@item.Id" value="@chose.Text">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                @chose.Text
+                            </label>
+                        </div>
+                    }
+                </div>
+                break;
+            case QuestionTypes.SingleLine or QuestionTypes.MultiLine:
+                <div class="form-control">
+                    <label class="form-label">@item.Text</label>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="@item.Id" value="@chose.Text">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            @chose.Text
-                        </label>
+                        @if (item.QuestionTypeId == QuestionTypes.SingleLine)
+                        {
+                            <input class="form-check-text" type="text" name="@item.Id">
+                        }
+                        else
+                        {
+                            <textarea class="form-check-text" type="text" name="@item.Id"></textarea>
+
+                        }
                     </div>
-                }
-            </div>
+                </div>
+                break;
+
         }
+
+
     }
     <input type="submit" value="kaydet" />
 </form>

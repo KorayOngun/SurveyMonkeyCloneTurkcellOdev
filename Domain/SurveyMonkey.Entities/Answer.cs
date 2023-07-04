@@ -13,7 +13,6 @@ namespace SurveyMonkey.Entities
        
         public IList<MultiChoiceAnswer> MultiChoiceAnswer { get; set; } = new List<MultiChoiceAnswer>();
         public IList<SingleChoiceAnswer> SingleChoiceAnswer { get; set; } = new List<SingleChoiceAnswer>();
-
-        
+        public IList<LineAnswer> lineAnswers { get; set; } = new List<LineAnswer>();
     }
 }

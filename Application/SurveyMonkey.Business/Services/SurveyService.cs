@@ -27,7 +27,19 @@ namespace SurveyMonkey.Business.Services
 
         public async Task<int> CreateSurveyAsync(SurveyCreateRequest survey)
         {
+            foreach (var question in survey.Questions)
+            {
+                if (question.QuestionTypeId == 3)
+                {
+                    question.Choices = new List<ChoiceForSurveyCreate>();
+                    for (int i = 1; i < 11; i++)
+                    {
+                        question.Choices.Add(new() { Text = i.ToString() });
+                    }
+                }
+            }
             var item = _mapper.Map<Survey>(survey);
+            
             await _repo.CreateAsync(item);
             return item.Id;
         }
