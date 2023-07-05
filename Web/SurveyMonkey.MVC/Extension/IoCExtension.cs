@@ -21,6 +21,7 @@ namespace SurveyMonkey.MVC.Extension
             builder.Services.AddScoped<IAnswerRepo, AnswerRepo>();
             builder.Services.AddScoped<ILineAnswerRepo, LineAnswerRepo>();
             builder.Services.AddScoped<ISurveyService, SurveyService>();
+            builder.Services.AddScoped<ISurveyReportService, SurveyReportService>();
 
             builder.Services.AddScoped<IUserRepo, UserRepo>();
             builder.Services.AddScoped<IUserService, UserService>();

@@ -21,12 +21,13 @@ namespace SurveyMonkey.WebApi.Controllers
     {
 
         private readonly ISurveyService _surveyService;
+        private readonly ISurveyReportService _surveyReportService;
 
-        public SurveyController(ISurveyService surveyService)
+        public SurveyController(ISurveyService surveyService, ISurveyReportService surveyReportService)
         {
             _surveyService = surveyService;
+            _surveyReportService = surveyReportService;
         }
-
 
         [HttpGet("[action]")]
         public async Task<SurveyResponse> GetSurvey(int id) 
@@ -42,7 +43,7 @@ namespace SurveyMonkey.WebApi.Controllers
         {
             var mail = HttpContext.Request.Headers.GetAuthorizationValues(JwtRegisteredClaimNames.Email);
             
-            var item = await _surveyService.GetReportAsync(id,mail);
+            var item = await _surveyReportService.GetReportAsync(id,mail);
             return item;
         }
       

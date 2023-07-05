@@ -12,10 +12,12 @@ namespace SurveyMonkey.MVC.Controllers
     public class SurveyController : Controller
     { 
         private readonly ISurveyService _surveyService;
+        private readonly ISurveyReportService _surveyReportService;
 
-        public SurveyController(ISurveyService surveyService)
+        public SurveyController(ISurveyService surveyService, ISurveyReportService surveyReportService)
         {
-            _surveyService = surveyService; 
+            _surveyService = surveyService;
+            _surveyReportService = surveyReportService;
         }
 
         [HttpGet]
@@ -74,7 +76,7 @@ namespace SurveyMonkey.MVC.Controllers
         public async Task<IActionResult> LineAnswers(int id)
         {
             var mail = User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
-            var data = await _surveyService.GetLineAnswerReport(id, mail);
+            var data = await _surveyReportService.GetLineAnswerReport(id, mail);
             if (data == default)
             {
                 return View("Error", "Home");
@@ -91,7 +93,7 @@ namespace SurveyMonkey.MVC.Controllers
         {
             
             var mail = User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
-            var data = await _surveyService.GetReportAsync(id,mail);
+            var data = await _surveyReportService.GetReportAsync(id,mail);
             if (data == default)
             {
                 return View("Error", "Home");

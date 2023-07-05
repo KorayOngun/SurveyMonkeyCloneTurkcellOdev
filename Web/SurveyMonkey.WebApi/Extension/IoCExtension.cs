@@ -27,6 +27,8 @@ namespace SurveyMonkey.WebApi.Extension
 
             builder.Services.AddScoped<IUserRepo, UserRepo>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ISurveyReportService, SurveyReportService>();
+
 
             var connectionString = builder.Configuration.GetConnectionString("SqlCon");
             builder.Services.AddDbContext<SurveyMonkeyDbContext>(opt => opt.UseSqlServer(connectionString));
