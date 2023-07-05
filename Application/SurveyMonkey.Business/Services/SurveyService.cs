@@ -76,7 +76,32 @@ namespace SurveyMonkey.Business.Services
             var item = await _repo.GetByIdAsync(id);
             return item.ConvertToDto<SurveyResponse>(_mapper);
         }
+        public async Task<IEnumerable<QuestionLineAnswerReportResponse>> GetLineAnswerReport(int id,string email)
+        {
+            Survey survey = await _repo.GetByIdForReportAsync(id,email);
+            IEnumerable<QuestionLineAnswerReportResponse> report = await getQuestionLineAnswerReport(survey);
+            return report;
+        }
 
+        private async Task<IEnumerable<QuestionLineAnswerReportResponse>> getQuestionLineAnswerReport(Survey survey)
+        {
+            ICollection<QuestionLineAnswerReportResponse> report = new List<QuestionLineAnswerReportResponse>();
+            foreach (var question in survey.Questions)
+            {
+                if (question.QuestionTypeId == QuestionTypes.SingleLine || question.QuestionTypeId == QuestionTypes.MultiLine)
+                {
+                    var answers = await _repo.LineAnswersForReport(question.Id);
+                    var item = new QuestionLineAnswerReportResponse
+                    {
+                        Id = question.Id,
+                        Text = question.Text,
+                        lineAnswers =answers.ConvertToVirtualDto<LineAnswerView>(_mapper)
+                    };
+                    report.Add(item);   
+                }
+            }
+            return report;
+        }
 
         private async Task<bool> controlSurveyForAnswer(Survey survey, AnswerRequest answer)
         {

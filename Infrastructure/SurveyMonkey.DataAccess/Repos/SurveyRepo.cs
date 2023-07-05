@@ -92,6 +92,11 @@ namespace SurveyMonkey.DataAccess.Repos
             }
             return count;
         }
+        public async Task<IEnumerable<LineAnswer>> LineAnswersForReport(int id)
+        {
+            IEnumerable<LineAnswer> items = await _context.LineAnswers.Where(l=>l.QuestionId == id).ToListAsync();
+            return items;
+        }
 
         public async Task<Survey> GetSurveyForAddAnswerControl(int id)
         {

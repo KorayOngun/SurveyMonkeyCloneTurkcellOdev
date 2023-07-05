@@ -23,6 +23,9 @@ namespace SurveyMonkey.Business.MapperProfile
             CreateMap<MultiChoiceForAnswerRequest, MultiChoiceAnswer>();
             CreateMap<SingleChoiceForAnswerRequest, SingleChoiceAnswer>();
             CreateMap<LineResponseForAnswerRequest,LineAnswer >();
+            CreateMap<LineAnswer, LineAnswerView>();
+
+
         }
     }
 }

@@ -30,13 +30,12 @@ namespace SurveyMonkey.MVC.Controllers
         }
 
         [HttpPost]
-        public  async Task<IActionResult> Index(IFormCollection form)
+        public  async Task<IActionResult> Index(IFormCollection form,int id)
         {
             AnswerRequest answer = new AnswerRequest();
             List<SingleChoiceForAnswerRequest> singleChoiceForAnswerRequests = new List<SingleChoiceForAnswerRequest>();
             List<MultiChoiceForAnswerRequest> multiChoiceForAnswerRequests = new List<MultiChoiceForAnswerRequest>();
             List<LineResponseForAnswerRequest> lineResponseForAnswerRequests = new List<LineResponseForAnswerRequest>();
-            
             foreach (var formItem in form)
             {
                 
@@ -60,15 +59,44 @@ namespace SurveyMonkey.MVC.Controllers
                 }
                 continue;
             }
-
             answer.SingleChoiceAnswer = singleChoiceForAnswerRequests;
             answer.MultiChoiceAnswer = multiChoiceForAnswerRequests;
             answer.lineAnswers = lineResponseForAnswerRequests;
-            answer.SurveyId = 11;
+            answer.SurveyId = id;
             await _surveyService.AddAnswer(answer);
-
-            return RedirectToAction("Index", "Home", new {id=11});
+            return RedirectToAction("Index", "Home");
             
+        }
+
+
+        [HttpGet]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any, NoStore = false, VaryByQueryKeys = new[] { "id" })]
+        public async Task<IActionResult> LineAnswers(int id)
+        {
+            var mail = User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
+            var data = await _surveyService.GetLineAnswerReport(id, mail);
+            if (data == default)
+            {
+                return View("Error", "Home");
+            }
+            
+            return Json(data);
+        }
+
+
+
+        [Authorize]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any ,NoStore =false, VaryByQueryKeys =new[] {"id"} )]
+        public async Task<IActionResult> Report(int id)
+        {
+            
+            var mail = User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
+            var data = await _surveyService.GetReportAsync(id,mail);
+            if (data == default)
+            {
+                return View("Error", "Home");
+            }
+            return View(data);
         }
 
         private void createLineResponse(string key, KeyValuePair<string, StringValues> formItem, int questionId, List<LineResponseForAnswerRequest> list)
@@ -85,16 +113,16 @@ namespace SurveyMonkey.MVC.Controllers
         {
             foreach (var choice in formItem.Value)
             {
-                MultiChoiceForAnswerRequest answer = new MultiChoiceForAnswerRequest 
+                MultiChoiceForAnswerRequest answer = new MultiChoiceForAnswerRequest
                 {
                     QuestionId = questionId,
                     ChoiceId = Convert.ToInt32(choice)
                 };
-                list.Add(answer);   
+                list.Add(answer);
             }
         }
 
-        private void createSingleChoice(string key, KeyValuePair<string, StringValues> formItem, int questionId,IList<SingleChoiceForAnswerRequest> list)
+        private void createSingleChoice(string key, KeyValuePair<string, StringValues> formItem, int questionId, IList<SingleChoiceForAnswerRequest> list)
         {
             var item = new SingleChoiceForAnswerRequest
             {
@@ -102,20 +130,6 @@ namespace SurveyMonkey.MVC.Controllers
                 ChoiceId = Convert.ToInt32(formItem.Value),
             };
             list.Add(item);
-        }
-
-        [Authorize]
-        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any ,NoStore =false, VaryByQueryKeys =new[] {"id"} )]
-        public async Task<IActionResult> Report(int id)
-        {
-            
-            var mail = User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
-            var data = await _surveyService.GetReportAsync(id,mail);
-            if (data == default)
-            {
-                return View("Error", "Home");
-            }
-            return View(data);
         }
     }
 }

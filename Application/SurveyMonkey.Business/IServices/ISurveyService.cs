@@ -16,5 +16,6 @@ namespace SurveyMonkey.Business.IServices
         Task<int> CreateSurveyAsync(SurveyCreateRequest survey);
         Task<SurveyReportResponse> GetReportAsync(int id,string userMail);
         Task AddAnswer(AnswerRequest answer);
+        Task<IEnumerable<QuestionLineAnswerReportResponse>> GetLineAnswerReport(int id, string email);
     }
 }

@@ -14,5 +14,6 @@ namespace SurveyMonkey.DataAccess.IRepos
         Task<int> GetCountChoice(int choiceId, int questionType);
         Task<int> GetCountParticipant(int id);
         Task<Survey> GetSurveyForAddAnswerControl(int id);
+        Task<IEnumerable<LineAnswer>> LineAnswersForReport(int id);
     }
 }

@@ -7,7 +7,7 @@
 @model SurveyResponse;
 <h1> @Model.Name</h1>
 
-<form asp-controller="survey" asp-action="index" method="post">
+<form asp-controller="survey" asp-action="index" method="post" asp-route-id="@Model.Id">
     @foreach (var item in Model.Questions)
     {
         switch (item.QuestionTypeId)
