@@ -10,7 +10,7 @@ using System.Security.Claims;
 namespace SurveyMonkey.MVC.Controllers
 {
     public class SurveyController : Controller
-    {
+    { 
         private readonly ISurveyService _surveyService;
 
         public SurveyController(ISurveyService surveyService)
