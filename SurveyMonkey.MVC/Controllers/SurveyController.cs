@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using SurveyMonkey.Business.Helper;
 using SurveyMonkey.Business.IServices;
+using SurveyMonkey.DataTransferObject.Request;
+using System.Collections.Generic;
 using System.Security.Claims;
 
 namespace SurveyMonkey.MVC.Controllers
@@ -14,6 +18,7 @@ namespace SurveyMonkey.MVC.Controllers
             _surveyService = surveyService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index(int id)
         {
             var data = await _surveyService.GetSurveyByIdAsync(id);
@@ -24,6 +29,80 @@ namespace SurveyMonkey.MVC.Controllers
             return View(data);
         }
 
+        [HttpPost]
+        public  async Task<IActionResult> Index(IFormCollection form)
+        {
+            AnswerRequest answer = new AnswerRequest();
+            List<SingleChoiceForAnswerRequest> singleChoiceForAnswerRequests = new List<SingleChoiceForAnswerRequest>();
+            List<MultiChoiceForAnswerRequest> multiChoiceForAnswerRequests = new List<MultiChoiceForAnswerRequest>();
+            List<LineResponseForAnswerRequest> lineResponseForAnswerRequests = new List<LineResponseForAnswerRequest>();
+            
+            foreach (var formItem in form)
+            {
+                
+                var key = formItem.Key;
+                if (!key.StartsWith("__"))
+                {
+                    var questionId = Convert.ToInt32(key.Split(",").First());
+                    var questionTypeId = Convert.ToInt32(key.Split(",").Last());
+                    switch (questionTypeId)
+                    {
+                        case QuestionTypes.SingleChoice or QuestionTypes.Rating:
+                            createSingleChoice(key, formItem, questionId, singleChoiceForAnswerRequests);
+                            break;
+                        case QuestionTypes.MultiChoice:
+                            createMultiChoice(key, formItem, questionId, multiChoiceForAnswerRequests);
+                            break;
+                        case QuestionTypes.SingleLine or QuestionTypes.MultiLine:
+                            createLineResponse(key, formItem, questionId, lineResponseForAnswerRequests);
+                            break;
+                    }
+                }
+                continue;
+            }
+
+            answer.SingleChoiceAnswer = singleChoiceForAnswerRequests;
+            answer.MultiChoiceAnswer = multiChoiceForAnswerRequests;
+            answer.lineAnswers = lineResponseForAnswerRequests;
+            answer.SurveyId = 11;
+            await _surveyService.AddAnswer(answer);
+
+            return RedirectToAction("Index", "Home", new {id=11});
+            
+        }
+
+        private void createLineResponse(string key, KeyValuePair<string, StringValues> formItem, int questionId, List<LineResponseForAnswerRequest> list)
+        {
+            var item = new LineResponseForAnswerRequest
+            {
+                QuestionId = questionId,
+                Text = formItem.Value,
+            };
+            list.Add(item);
+        }
+
+        private void createMultiChoice(string key, KeyValuePair<string, StringValues> formItem, int questionId, List<MultiChoiceForAnswerRequest> list)
+        {
+            foreach (var choice in formItem.Value)
+            {
+                MultiChoiceForAnswerRequest answer = new MultiChoiceForAnswerRequest 
+                {
+                    QuestionId = questionId,
+                    ChoiceId = Convert.ToInt32(choice)
+                };
+                list.Add(answer);   
+            }
+        }
+
+        private void createSingleChoice(string key, KeyValuePair<string, StringValues> formItem, int questionId,IList<SingleChoiceForAnswerRequest> list)
+        {
+            var item = new SingleChoiceForAnswerRequest
+            {
+                QuestionId = questionId,
+                ChoiceId = Convert.ToInt32(formItem.Value),
+            };
+            list.Add(item);
+        }
 
         [Authorize]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any ,NoStore =false, VaryByQueryKeys =new[] {"id"} )]

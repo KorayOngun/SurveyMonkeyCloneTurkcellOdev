@@ -1,5 +1,5 @@
 ﻿@using SurveyMonkey.DataTransferObject.Response;
-@using SurveyMonkey.MVC.Services;
+@using SurveyMonkey.Business.Helper;
 
 @{
     ViewData["Title"] = "Index";
@@ -7,10 +7,9 @@
 @model SurveyResponse;
 <h1> @Model.Name</h1>
 
-<form asp-controller="home" asp-action="index" method="post">
+<form asp-controller="survey" asp-action="index" method="post">
     @foreach (var item in Model.Questions)
     {
-
         switch (item.QuestionTypeId)
         {
             case QuestionTypes.SingleChoice or QuestionTypes.Rating:
@@ -19,7 +18,7 @@
                     @foreach (var chose in item.Choices)
                     {
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="@item.Id" value="@chose.Id">
+                            <input class="form-check-input" type="radio" name="@item.Id,@item.QuestionTypeId" value="@chose.Id">
                             <label class="form-check-label" for="flexRadioDefault1">
                                 @chose.Text
                             </label>
@@ -34,7 +33,7 @@
                     @foreach (var chose in item.Choices)
                     {
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="@item.Id" value="@chose.Text">
+                            <input class="form-check-input" type="checkbox" name="@item.Id,@item.QuestionTypeId" value="@chose.Id">
                             <label class="form-check-label" for="flexCheckDefault">
                                 @chose.Text
                             </label>
@@ -48,12 +47,11 @@
                     <div class="form-check">
                         @if (item.QuestionTypeId == QuestionTypes.SingleLine)
                         {
-                            <input class="form-check-text" type="text" name="@item.Id">
+                            <input class="form-check-text" type="text" name="@item.Id,@item.QuestionTypeId">
                         }
                         else
                         {
-                            <textarea class="form-check-text" type="text" name="@item.Id"></textarea>
-
+                            <textarea class="form-check-text" type="text" name="@item.Id,@item.QuestionTypeId"></textarea>
                         }
                     </div>
                 </div>
@@ -63,6 +61,6 @@
 
 
     }
-    <input type="submit" value="kaydet" />
+    <input type="submit" value="kaydet"/>
 </form>
 

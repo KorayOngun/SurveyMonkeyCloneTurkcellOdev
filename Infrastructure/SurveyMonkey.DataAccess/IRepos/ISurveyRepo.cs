@@ -9,8 +9,10 @@ namespace SurveyMonkey.DataAccess.IRepos
 {
     public interface ISurveyRepo : IRepo<Survey>,IDeletable<Survey>
     {
+        Task AddAnswerToSurvey(Answer answer);
         Task<Survey> GetByIdForReportAsync(int id,string userMail);
         Task<int> GetCountChoice(int choiceId, int questionType);
         Task<int> GetCountParticipant(int id);
+        Task<Survey> GetSurveyForAddAnswerControl(int id);
     }
 }

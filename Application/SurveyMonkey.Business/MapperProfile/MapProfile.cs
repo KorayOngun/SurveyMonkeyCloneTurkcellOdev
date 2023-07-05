@@ -26,6 +26,9 @@ namespace SurveyMonkey.Business.MapperProfile
             CreateMap<SurveyCreateRequest, Survey>();
 
             CreateMap<UserLoginRequest, User>();
+            CreateMap<UserCreateRequest, User>();
+
+            CreateMap<AnswerRequest, Answer>();
 
         }
     }

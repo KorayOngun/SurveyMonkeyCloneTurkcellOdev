@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,5 +15,6 @@ namespace SurveyMonkey.DataAccess.IRepos
 
         Task CreateAsync(T entity);
         void Create(T entity);
+        Task<bool> isExist(Expression<Func<T, bool>> predicate);
     }
 }

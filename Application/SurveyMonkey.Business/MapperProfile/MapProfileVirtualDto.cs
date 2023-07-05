@@ -18,6 +18,11 @@ namespace SurveyMonkey.Business.MapperProfile
 
             CreateMap<QuestionForSurveyCreate, Question>();
             CreateMap<ChoiceForSurveyCreate, Choice>();
+
+
+            CreateMap<MultiChoiceForAnswerRequest, MultiChoiceAnswer>();
+            CreateMap<SingleChoiceForAnswerRequest, SingleChoiceAnswer>();
+            CreateMap<LineResponseForAnswerRequest,LineAnswer >();
         }
     }
 }

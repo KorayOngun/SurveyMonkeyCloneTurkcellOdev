@@ -5,6 +5,7 @@ using SurveyMonkey.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -50,11 +51,14 @@ namespace SurveyMonkey.DataAccess.Repos
 
         public async Task<Survey> GetByIdAsync(int id)
         {
-            var item = await _context.Surveys.Where(item => item.Id == id).AsNoTracking()
-                                        .Include(s => s.Questions).ThenInclude(q => q.Choices)                 
-                                        .Include(s=>s.Questions).ThenInclude(q=>q.QuestionType)
-                                        .Include(s => s.User)
-                                        .FirstOrDefaultAsync();
+            var item = await _context.Surveys.Where(item => item.Id == id)
+                                             .AsNoTracking()
+                                             .Include(s => s.Questions)
+                                             .ThenInclude(q => q.Choices)
+                                             .Include(s => s.Questions)
+                                             .ThenInclude(q => q.QuestionType)
+                                             .Include(s => s.User)
+                                             .FirstOrDefaultAsync();
            
             return item;
         }
@@ -62,11 +66,11 @@ namespace SurveyMonkey.DataAccess.Repos
         public async Task<Survey> GetByIdForReportAsync(int id, string userMail)
         {
             var item = await _context.Surveys.AsNoTracking()
-                .Include(s => s.User)
-                .Where(item => item.Id == id && item.User.Email == userMail)
-                .Include(s => s.Questions)
-                .ThenInclude(q => q.Choices)
-                .FirstOrDefaultAsync();
+                                             .Include(s => s.User)
+                                             .Where(item => item.Id == id && item.User.Email == userMail)
+                                             .Include(s => s.Questions)
+                                             .ThenInclude(q => q.Choices)
+                                             .FirstOrDefaultAsync();
 
             return item;
         }
@@ -78,15 +82,37 @@ namespace SurveyMonkey.DataAccess.Repos
         public async Task<int> GetCountChoice(int choiceId,int questionType)
         {
             int count = 0;  
-            if (questionType==1)
+            if (questionType==2)
             {
-                count = await _context.SingleChoiceAnswers.CountAsync(s=>s.ChoiceId == choiceId);
+                count = await _context.MultiChoiceAnswers.CountAsync(s => s.ChoiceId == choiceId);
             }
             else
             {
-                count = await _context.MultiChoiceAnswers.CountAsync(s =>s.ChoiceId == choiceId);
+                count = await _context.SingleChoiceAnswers.CountAsync(s => s.ChoiceId == choiceId);
             }
             return count;
+        }
+
+        public async Task<Survey> GetSurveyForAddAnswerControl(int id)
+        {
+            var item = await _context.Surveys.AsNoTracking().Where(s => s.Id == id).Include(s => s.Questions).ThenInclude(q => q.Choices).FirstOrDefaultAsync();
+            return item;
+        }
+
+        public async Task AddAnswerToSurvey(Answer answer)
+        {
+            var item = await _context.Surveys.Where(s=>s.Id == answer.SurveyId).FirstOrDefaultAsync();
+            item.Answers.Add(answer);  
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> isExist(Expression<Func<Survey, bool>> predicate)
+        {
+            if (await _context.Surveys.AnyAsync(predicate))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

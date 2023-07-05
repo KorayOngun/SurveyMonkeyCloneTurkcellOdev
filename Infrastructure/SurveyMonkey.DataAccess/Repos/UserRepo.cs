@@ -5,6 +5,7 @@ using SurveyMonkey.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,6 +40,16 @@ namespace SurveyMonkey.DataAccess.Repos
         {
             throw new NotImplementedException();
         }
+
+        public async Task<bool> isExist(Expression<Func<User, bool>> predicate)
+        {
+            if (await _context.Users.AnyAsync(predicate))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public async Task<bool> ValidateUser(User user)
         {
             var item = await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == user.Password);

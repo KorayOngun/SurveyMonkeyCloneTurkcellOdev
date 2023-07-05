@@ -10,5 +10,6 @@ namespace SurveyMonkey.Business.IServices
     public interface IUserService
     {
         Task<bool> Login(UserLoginRequest user);
+        Task<bool> CreateUser(UserCreateRequest user);
     }
 }

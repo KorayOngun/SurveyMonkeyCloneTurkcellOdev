@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SurveyMonkey.Business.Extensions;
+using SurveyMonkey.Business.Helper;
 using SurveyMonkey.Business.IServices;
 using SurveyMonkey.DataAccess.IRepos;
 using SurveyMonkey.DataTransferObject.Request;
@@ -47,48 +48,83 @@ namespace SurveyMonkey.Business.Services
         public async Task<SurveyReportResponse> GetReportAsync(int id, string userMail)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
-            var item = await _repo.GetByIdForReportAsync(id,userMail);
+            Survey item = await _repo.GetByIdForReportAsync(id,userMail);
             SurveyReportResponse report = await generateReport(item);
             stopwatch.Stop();
             report.Stopwatch = stopwatch;
-
             return report;
         }
 
-        private async Task<SurveyReportResponse> generateReport(Survey item)
+       
+        public async Task AddAnswer(AnswerRequest answer)
         {
-            
-            var survey = new SurveyReportResponse
+            var survey = await _repo.GetSurveyForAddAnswerControl(answer.SurveyId);
+            if (await controlSurveyForAnswer(survey,answer))
             {
-                SurveyId = item.Id,
-                Participant = await getParticipant(item.Id),
-                SurveyName = item.Name,
-                Questions = await getQuestions(item)
-            };
-            
-            return survey;
+                Answer _answer  = answer.ConvertToEntity<Answer>(_mapper);
+                await _repo.AddAnswerToSurvey(_answer);
+            }
+            else
+            {
+                throw new Exception(message: "anket, soru veya seçim id'si hatalı");
+            }
+
         }
 
-        private async Task<int> getParticipant(int id)
+        public async Task<SurveyResponse> GetSurveyByIdAsync(int id)
+        {
+            var item = await _repo.GetByIdAsync(id);
+            return item.ConvertToDto<SurveyResponse>(_mapper);
+        }
+
+
+        private async Task<bool> controlSurveyForAnswer(Survey survey, AnswerRequest answer)
+        {
+            foreach (var singleChoiceAnswer in answer.SingleChoiceAnswer)
+            {
+                var questionAndChoiceControl = survey.Questions.Where(q => q.Id == singleChoiceAnswer.QuestionId).FirstOrDefault()?.Choices.Where(c => c.Id == singleChoiceAnswer.ChoiceId).Count() != 1;
+                if (questionAndChoiceControl)
+                {
+                    return false;
+                }
+            }
+            foreach (var multiChoiceAnswer in answer.MultiChoiceAnswer)
+            {
+                var questionAndChoiceControl = survey.Questions.Where(q => q.Id == multiChoiceAnswer.QuestionId).FirstOrDefault()?.Choices.Where(c => c.Id == multiChoiceAnswer.ChoiceId).Count() != 1;
+                if (questionAndChoiceControl)
+                {
+                    return false;
+                }
+            }
+            foreach (var lineAnswers in answer.lineAnswers)
+            {
+                var questionControl = survey.Questions.Where(q => q.Id == lineAnswers.QuestionId).Count() != 1;
+                if (questionControl)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private async Task<int> getParticipantForGenerateReport(int id)
         {
             var count = await _repo.GetCountParticipant(id);
             return count;
         }
-
-        private async Task<IList<SurveyReportQuestionView>> getQuestions(Survey item)
+        private async Task<IList<SurveyReportQuestionView>> getQuestionsForGenerateReport(Survey item)
         {
             SurveyReportChoicesView choicesView;
             SurveyReportQuestionView questionView;
             List<SurveyReportQuestionView> questionList = new();
             foreach (var question in item.Questions)
             {
-                
                 questionView = new SurveyReportQuestionView
                 {
                     QuestionId = question.Id,
                     Text = question.Text,
                 };
-                
+
                 foreach (var choices in question.Choices)
                 {
                     choicesView = new SurveyReportChoicesView
@@ -96,31 +132,29 @@ namespace SurveyMonkey.Business.Services
                         ChoiceId = choices.Id,
                         Text = choices.Text,
                         Count = await countToAnswers(choices.Id, question.QuestionTypeId)
-                        
-                };
-                    
+                    };
+
                     questionView.Choices.Add(choicesView);
                 }
-                
                 questionList.Add(questionView);
-            }            
+            }
             return questionList;
         }
-
-    
-
-        private async Task<int> countToAnswers(int choiceId,int questionType)
+        private async Task<int> countToAnswers(int choiceId, int questionType)
         {
-            var count = await  _repo.GetCountChoice(choiceId, questionType);
+            var count = await _repo.GetCountChoice(choiceId, questionType);
             return count;
         }
-
-      
-
-        public async Task<SurveyResponse> GetSurveyByIdAsync(int id)
+        private async Task<SurveyReportResponse> generateReport(Survey item)
         {
-            var item = await _repo.GetByIdAsync(id);
-            return item.ConvertToDto<SurveyResponse>(_mapper);
+            var survey = new SurveyReportResponse
+            {
+                SurveyId = item.Id,
+                Participant = await getParticipantForGenerateReport(item.Id),
+                SurveyName = item.Name,
+                Questions = await getQuestionsForGenerateReport(item)
+            };
+            return survey;
         }
     }
 }

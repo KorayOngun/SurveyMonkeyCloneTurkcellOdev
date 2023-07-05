@@ -23,6 +23,18 @@ namespace SurveyMonkey.Business.Services
             _mapper = mapper;
         }
 
+        public async Task<bool> CreateUser(UserCreateRequest user)
+        {
+            var userCondition = await _repo.isExist(u=>u.Email == user.Email); 
+            if (!userCondition)
+            {
+                var item = user.ConvertToEntity<User>(_mapper);
+                await _repo.CreateAsync(item);
+                return true;
+            }
+            return false;
+        }
+
         public async Task<bool> Login(UserLoginRequest user)
         {
             var u = user.ConvertToEntity<User>(_mapper);

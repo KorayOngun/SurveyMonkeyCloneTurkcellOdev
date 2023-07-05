@@ -17,6 +17,6 @@ namespace SurveyMonkey.Entities
 
         public int QuestionTypeId { get; set; }
         public QuestionType QuestionType { get; set; }
-        public IList<Choice>? Choices { get; set; }
+        public IList<Choice>? Choices { get; set; } 
     }
 }
