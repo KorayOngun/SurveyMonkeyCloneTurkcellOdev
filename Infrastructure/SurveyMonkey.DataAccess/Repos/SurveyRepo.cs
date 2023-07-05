@@ -74,29 +74,8 @@ namespace SurveyMonkey.DataAccess.Repos
 
             return item;
         }
-        public async Task<int> GetCountParticipant(int id)
-        {
-            var count = await _context.Answers.CountAsync(a => a.SurveyId == id);
-            return count;
-        }
-        public async Task<int> GetCountChoice(int choiceId,int questionType)
-        {
-            int count = 0;  
-            if (questionType==2)
-            {
-                count = await _context.MultiChoiceAnswers.CountAsync(s => s.ChoiceId == choiceId);
-            }
-            else
-            {
-                count = await _context.SingleChoiceAnswers.CountAsync(s => s.ChoiceId == choiceId);
-            }
-            return count;
-        }
-        public async Task<IEnumerable<LineAnswer>> LineAnswersForReport(int id)
-        {
-            IEnumerable<LineAnswer> items = await _context.LineAnswers.Where(l=>l.QuestionId == id).ToListAsync();
-            return items;
-        }
+        
+
 
         public async Task<Survey> GetSurveyForAddAnswerControl(int id)
         {

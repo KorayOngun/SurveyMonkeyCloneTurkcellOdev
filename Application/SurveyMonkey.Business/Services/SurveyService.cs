@@ -18,11 +18,19 @@ namespace SurveyMonkey.Business.Services
     public class SurveyService : ISurveyService
     {
         private readonly ISurveyRepo _repo;
+        private readonly IAnswerRepo _answerRepo;
+        private readonly ILineAnswerRepo _lineAnswerRepo;
+        private readonly ISingleChoiceRepo _singleRepo;
+        private readonly IMultiChoiceRepo _multiRepo;
         private readonly IMapper _mapper;
 
-        public SurveyService(ISurveyRepo repo, IMapper mapper)
+        public SurveyService(ISurveyRepo repo, IAnswerRepo answerRepo, ILineAnswerRepo lineAnswerRepo, ISingleChoiceRepo singleRepo, IMultiChoiceRepo multiRepo, IMapper mapper)
         {
             _repo = repo;
+            _answerRepo = answerRepo;
+            _lineAnswerRepo = lineAnswerRepo;
+            _singleRepo = singleRepo;
+            _multiRepo = multiRepo;
             _mapper = mapper;
         }
 
@@ -90,7 +98,7 @@ namespace SurveyMonkey.Business.Services
             {
                 if (question.QuestionTypeId == QuestionTypes.SingleLine || question.QuestionTypeId == QuestionTypes.MultiLine)
                 {
-                    var answers = await _repo.LineAnswersForReport(question.Id);
+                    var answers = await _lineAnswerRepo.LineAnswersForReport(question.Id);
                     var item = new QuestionLineAnswerReportResponse
                     {
                         Id = question.Id,
@@ -134,7 +142,7 @@ namespace SurveyMonkey.Business.Services
 
         private async Task<int> getParticipantForGenerateReport(int id)
         {
-            var count = await _repo.GetCountParticipant(id);
+            var count = await _answerRepo.GetCountParticipant(id);
             return count;
         }
         private async Task<IList<SurveyReportQuestionView>> getQuestionsForGenerateReport(Survey item)
@@ -152,6 +160,7 @@ namespace SurveyMonkey.Business.Services
 
                 foreach (var choices in question.Choices)
                 {
+                    
                     choicesView = new SurveyReportChoicesView
                     {
                         ChoiceId = choices.Id,
@@ -167,8 +176,17 @@ namespace SurveyMonkey.Business.Services
         }
         private async Task<int> countToAnswers(int choiceId, int questionType)
         {
-            var count = await _repo.GetCountChoice(choiceId, questionType);
-            return count;
+            if (questionType == QuestionTypes.SingleChoice ||questionType == QuestionTypes.Rating)
+            {
+                var count = await _singleRepo.GetCountChoice(choiceId);
+                return count;
+            }
+            else if (questionType == QuestionTypes.MultiChoice)
+            {
+                var count = await _multiRepo.GetCountChoice(choiceId);
+                return count;
+            }
+            return 0;   
         }
         private async Task<SurveyReportResponse> generateReport(Survey item)
         {

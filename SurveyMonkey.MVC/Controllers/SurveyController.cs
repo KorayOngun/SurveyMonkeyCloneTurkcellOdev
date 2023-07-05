@@ -47,13 +47,13 @@ namespace SurveyMonkey.MVC.Controllers
                     switch (questionTypeId)
                     {
                         case QuestionTypes.SingleChoice or QuestionTypes.Rating:
-                            createSingleChoice(key, formItem, questionId, singleChoiceForAnswerRequests);
+                            createSingleChoice(formItem, questionId, singleChoiceForAnswerRequests);
                             break;
                         case QuestionTypes.MultiChoice:
-                            createMultiChoice(key, formItem, questionId, multiChoiceForAnswerRequests);
+                            createMultiChoice(formItem, questionId, multiChoiceForAnswerRequests);
                             break;
                         case QuestionTypes.SingleLine or QuestionTypes.MultiLine:
-                            createLineResponse(key, formItem, questionId, lineResponseForAnswerRequests);
+                            createLineResponse(formItem, questionId, lineResponseForAnswerRequests);
                             break;
                     }
                 }
@@ -99,7 +99,7 @@ namespace SurveyMonkey.MVC.Controllers
             return View(data);
         }
 
-        private void createLineResponse(string key, KeyValuePair<string, StringValues> formItem, int questionId, List<LineResponseForAnswerRequest> list)
+        private void createLineResponse(KeyValuePair<string, StringValues> formItem, int questionId, List<LineResponseForAnswerRequest> list)
         {
             var item = new LineResponseForAnswerRequest
             {
@@ -109,7 +109,7 @@ namespace SurveyMonkey.MVC.Controllers
             list.Add(item);
         }
 
-        private void createMultiChoice(string key, KeyValuePair<string, StringValues> formItem, int questionId, List<MultiChoiceForAnswerRequest> list)
+        private void createMultiChoice(KeyValuePair<string, StringValues> formItem, int questionId, List<MultiChoiceForAnswerRequest> list)
         {
             foreach (var choice in formItem.Value)
             {
@@ -122,7 +122,7 @@ namespace SurveyMonkey.MVC.Controllers
             }
         }
 
-        private void createSingleChoice(string key, KeyValuePair<string, StringValues> formItem, int questionId, IList<SingleChoiceForAnswerRequest> list)
+        private void createSingleChoice(KeyValuePair<string, StringValues> formItem, int questionId, IList<SingleChoiceForAnswerRequest> list)
         {
             var item = new SingleChoiceForAnswerRequest
             {

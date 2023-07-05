@@ -11,9 +11,6 @@ namespace SurveyMonkey.DataAccess.IRepos
     {
         Task AddAnswerToSurvey(Answer answer);
         Task<Survey> GetByIdForReportAsync(int id,string userMail);
-        Task<int> GetCountChoice(int choiceId, int questionType);
-        Task<int> GetCountParticipant(int id);
         Task<Survey> GetSurveyForAddAnswerControl(int id);
-        Task<IEnumerable<LineAnswer>> LineAnswersForReport(int id);
     }
 }
