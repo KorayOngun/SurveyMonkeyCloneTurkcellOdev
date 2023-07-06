@@ -51,7 +51,7 @@ namespace SurveyMonkey.DataAccess.Repos
 
         public async Task<Survey> GetByIdAsync(int id)
         {
-            var item = await _context.Surveys.Where(item => item.Id == id)
+            var item = await _context.Surveys.Where(item => item.Id == id && item.ExpireDate > DateTime.Now)
                                              .AsNoTracking()
                                              .Include(s => s.Questions)
                                              .ThenInclude(q => q.Choices)
@@ -59,7 +59,6 @@ namespace SurveyMonkey.DataAccess.Repos
                                              .ThenInclude(q => q.QuestionType)
                                              .Include(s => s.User)
                                              .FirstOrDefaultAsync();
-           
             return item;
         }
 
@@ -97,6 +96,12 @@ namespace SurveyMonkey.DataAccess.Repos
                 return true;
             }
             return false;
+        }
+
+        public async Task<IEnumerable<Survey>> GetSurveysForList(Expression<Func<Survey, bool>> filter)
+        {
+            IEnumerable<Survey> items = await _context.Surveys.Include(s=>s.User).Where(filter).AsNoTracking().ToListAsync();
+            return items;
         }
     }
 }

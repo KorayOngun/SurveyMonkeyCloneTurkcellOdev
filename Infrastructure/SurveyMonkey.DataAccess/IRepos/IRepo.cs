@@ -16,5 +16,6 @@ namespace SurveyMonkey.DataAccess.IRepos
         Task CreateAsync(T entity);
         void Create(T entity);
         Task<bool> isExist(Expression<Func<T, bool>> predicate);
+        
     }
 }

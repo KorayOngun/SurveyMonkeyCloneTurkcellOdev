@@ -11,10 +11,12 @@ namespace SurveyMonkey.Business.IServices
 {
     public interface ISurveyService
     {
-        Task<SurveyResponse> GetSurveyByIdAsync(int id);
+        Task<SurveyResponse> GetSurveyByIdAForResponseAsync(int id);
 
         Task<int> CreateSurveyAsync(SurveyCreateRequest survey);
         
         Task AddAnswer(AnswerRequest answer);
+
+        Task<IEnumerable<SurveyListResponse>> GetSurveysAsync(string userMail);
     }
 }

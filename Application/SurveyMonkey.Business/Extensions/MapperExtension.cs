@@ -16,6 +16,10 @@ namespace SurveyMonkey.Business.Extensions
         {
             return mapper.Map<T>(entity);
         }
+        public static IEnumerable<T> ConvertToDtoEnurable<T>(this IEnumerable<IEntity> entity, IMapper mapper) where T : class, IDto, new()
+        {
+            return mapper.Map<IEnumerable<T>>(entity);
+        }
         public static IEnumerable<T> ConvertToVirtualDto<T>(this IEnumerable<IEntity> entities, IMapper mapper) where T : class, IVirtualDto, new()
         {
             return mapper.Map<IEnumerable<T>>(entities);

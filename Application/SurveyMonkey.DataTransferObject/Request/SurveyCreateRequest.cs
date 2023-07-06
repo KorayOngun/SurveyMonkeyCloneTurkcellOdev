@@ -14,7 +14,8 @@ namespace SurveyMonkey.DataTransferObject.Request
         public int UserId { get; set; }
         [Required]
         public string Name { get; set; }
-        public DateTime CreateDate { get; set; } = DateTime.Now;
+        [Required]
+        public DateTime ExpireDate { get; set; } = DateTime.Now.AddDays(7);
         [Required]
         public IList<QuestionForSurveyCreate> Questions { get; set; } = new List<QuestionForSurveyCreate>();
     }

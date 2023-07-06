@@ -22,17 +22,21 @@ namespace SurveyMonkey.WebApi.Controllers
 
         private readonly ISurveyService _surveyService;
         private readonly ISurveyReportService _surveyReportService;
+        private readonly IConfiguration _configuration;
 
-        public SurveyController(ISurveyService surveyService, ISurveyReportService surveyReportService)
+
+        public SurveyController(ISurveyService surveyService, ISurveyReportService surveyReportService, IConfiguration configuration)
         {
             _surveyService = surveyService;
             _surveyReportService = surveyReportService;
+            _configuration = configuration;
         }
 
         [HttpGet("[action]")]
         public async Task<SurveyResponse> GetSurvey(int id) 
         {
-            var item = await _surveyService.GetSurveyByIdAsync(id);
+            var item = await _surveyService.GetSurveyByIdAForResponseAsync(id);
+
             return item;
         }
 
@@ -52,8 +56,16 @@ namespace SurveyMonkey.WebApi.Controllers
         public async Task<IActionResult> Create(SurveyCreateRequest survey)
         {
             var id = await  _surveyService.CreateSurveyAsync(survey);
-            string path = "https://localhost:7104/survey/index?id=" + id.ToString();
+            var MvcPath = _configuration.GetValue<string>("MvcUrl");
+            string path = MvcPath + id.ToString();
             return Created(path, survey);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddAnswer(AnswerRequest answer)
+        {
+            await _surveyService.AddAnswer(answer);
+            return Ok();
         }
 
     }

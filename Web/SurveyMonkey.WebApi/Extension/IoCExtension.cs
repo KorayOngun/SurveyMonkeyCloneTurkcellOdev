@@ -46,12 +46,10 @@ namespace SurveyMonkey.WebApi.Extension
                                      ValidateAudience = true,
                                      ValidIssuer = "server",
                                      ValidAudience = "client",
+                                     ValidateLifetime = true,
                                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtKey)),
                                  };
                              });
-
-
-
         }
     }
 }

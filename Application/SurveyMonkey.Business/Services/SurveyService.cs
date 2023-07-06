@@ -18,19 +18,11 @@ namespace SurveyMonkey.Business.Services
     public class SurveyService : ISurveyService
     {
         private readonly ISurveyRepo _repo;
-        private readonly IAnswerRepo _answerRepo;
-        private readonly ILineAnswerRepo _lineAnswerRepo;
-        private readonly ISingleChoiceRepo _singleRepo;
-        private readonly IMultiChoiceRepo _multiRepo;
         private readonly IMapper _mapper;
 
-        public SurveyService(ISurveyRepo repo, IAnswerRepo answerRepo, ILineAnswerRepo lineAnswerRepo, ISingleChoiceRepo singleRepo, IMultiChoiceRepo multiRepo, IMapper mapper)
+        public SurveyService(ISurveyRepo repo, IMapper mapper)
         {
             _repo = repo;
-            _answerRepo = answerRepo;
-            _lineAnswerRepo = lineAnswerRepo;
-            _singleRepo = singleRepo;
-            _multiRepo = multiRepo;
             _mapper = mapper;
         }
 
@@ -47,31 +39,32 @@ namespace SurveyMonkey.Business.Services
                     }
                 }
             }
+            if (survey.ExpireDate<=DateTime.Now)
+            {
+                throw new Exception(message: "anketin bitiş tarihi geçerli değil");
+            }
             var item = _mapper.Map<Survey>(survey);
-            
+
             await _repo.CreateAsync(item);
             return item.Id;
         }
 
-        
-
-       
         public async Task AddAnswer(AnswerRequest answer)
         {
             var survey = await _repo.GetSurveyForAddAnswerControl(answer.SurveyId);
-            if (await controlSurveyForAnswer(survey,answer))
+            if (survey == default)
             {
-                Answer _answer  = answer.ConvertToEntity<Answer>(_mapper);
-                await _repo.AddAnswerToSurvey(_answer);
+                throw new Exception(message: "anket id'si hatalı");
             }
-            else
+            if (await controlSurveyForAnswer(survey, answer) == false)
             {
-                throw new Exception(message: "anket, soru veya seçim id'si hatalı");
+                throw new Exception(message: "soru veya seçim id'si hatalı");
             }
-
+            Answer _answer = answer.ConvertToEntity<Answer>(_mapper);
+            await _repo.AddAnswerToSurvey(_answer);
         }
 
-        public async Task<SurveyResponse> GetSurveyByIdAsync(int id)
+        public async Task<SurveyResponse> GetSurveyByIdAForResponseAsync(int id)
         {
             var item = await _repo.GetByIdAsync(id);
             return item.ConvertToDto<SurveyResponse>(_mapper);
@@ -106,5 +99,11 @@ namespace SurveyMonkey.Business.Services
             return true;
         }
 
+        public async Task<IEnumerable<SurveyListResponse>> GetSurveysAsync(string userMail)
+        {
+            var surveys = await _repo.GetSurveysForList(s => s.User.Email == userMail);
+            var result = surveys.ConvertToDtoEnurable<SurveyListResponse>(_mapper);
+            return result;
+        }
     }
 }

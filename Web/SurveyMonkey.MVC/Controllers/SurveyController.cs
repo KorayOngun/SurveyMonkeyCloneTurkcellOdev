@@ -23,10 +23,10 @@ namespace SurveyMonkey.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int id)
         {
-            var data = await _surveyService.GetSurveyByIdAsync(id);
+            var data = await _surveyService.GetSurveyByIdAForResponseAsync(id);
             if (data == default)
             {
-                return View("Error","Home");
+                return GetErrorPage("id yanlış veya anketin süresi bitmiş :(");
             }
             return View(data);
         }
@@ -73,34 +73,52 @@ namespace SurveyMonkey.MVC.Controllers
 
         [HttpGet]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any, NoStore = false, VaryByQueryKeys = new[] { "id" })]
-        public async Task<IActionResult> LineAnswers(int id)
+        public async Task<IActionResult> LineAnswersReport(int id)
         {
-            var mail = User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
+            var mail = GetMail();
             var data = await _surveyReportService.GetLineAnswerReport(id, mail);
             if (data == default)
             {
-                return View("Error", "Home");
+                return GetErrorPage("anket id'si yanlış veya anket sahibi değilsiniz :(");
             }
-            
             return Json(data);
         }
 
 
+
+
+        [Authorize]
+        public async Task<IActionResult> GetSurveyList()
+        {
+            var mail = GetMail();
+            var data = await _surveyService.GetSurveysAsync(mail);
+            return View(data);
+            
+        }
 
         [Authorize]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any ,NoStore =false, VaryByQueryKeys =new[] {"id"} )]
         public async Task<IActionResult> Report(int id)
         {
             
-            var mail = User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
+            var mail =GetMail();
             var data = await _surveyReportService.GetReportAsync(id,mail);
             if (data == default)
             {
-                return View("Error", "Home");
+                return GetErrorPage("anket id'si yanlış veya anket sahibi değilsiniz :(");
             }
             return View(data);
         }
 
+        private string GetMail()
+        {
+            var mail = User.Claims.First(c => c.Type == ClaimTypes.Email).Value;
+            return mail;
+        }
+        private RedirectToActionResult GetErrorPage(string message)
+        {
+            return RedirectToAction("Error", "Home", new { message });
+        }
         private void createLineResponse(KeyValuePair<string, StringValues> formItem, int questionId, List<LineResponseForAnswerRequest> list)
         {
             var item = new LineResponseForAnswerRequest

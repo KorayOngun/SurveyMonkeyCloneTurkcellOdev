@@ -44,6 +44,10 @@ namespace SurveyMonkey.Business.Services
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
             Survey item = await _repo.GetByIdForReportAsync(id, userMail);
+            if (item == default)
+            {
+                return default;
+            }
             SurveyReportResponse report = await generateReport(item);
             stopwatch.Stop();
             report.Stopwatch = stopwatch;
