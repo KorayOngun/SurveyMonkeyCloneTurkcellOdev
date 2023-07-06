@@ -1,6 +1,6 @@
 # SurveyMonkeyClone Turkcell Odev
 
-![My Image](images/SurveyMonkeyCloneTurkcellOdev-1.jpg)
+![My Image](images/DbSchema.JPG)
 
 ![My Image](images/SurveyMonkeyCloneTurkcellOdev-1.jpg)
 ![My Image](images/SurveyMonkeyCloneTurkcellOdev-2.jpg)
