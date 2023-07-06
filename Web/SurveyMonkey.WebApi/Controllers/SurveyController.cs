@@ -23,8 +23,6 @@ namespace SurveyMonkey.WebApi.Controllers
         private readonly ISurveyService _surveyService;
         private readonly ISurveyReportService _surveyReportService;
         private readonly IConfiguration _configuration;
-
-
         public SurveyController(ISurveyService surveyService, ISurveyReportService surveyReportService, IConfiguration configuration)
         {
             _surveyService = surveyService;
@@ -56,6 +54,8 @@ namespace SurveyMonkey.WebApi.Controllers
         public async Task<IActionResult> Create(SurveyCreateRequest survey)
         {
             var id = await  _surveyService.CreateSurveyAsync(survey);
+            var userId = Convert.ToInt32(HttpContext.Request.Headers.GetAuthorizationValues(JwtRegisteredClaimNames.UniqueName));
+            survey.UserId = userId;
             var MvcPath = _configuration.GetValue<string>("MvcUrl");
             string path = MvcPath + id.ToString();
             return Created(path, survey);

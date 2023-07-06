@@ -9,6 +9,7 @@ namespace SurveyMonkey.DataTransferObject.Response
     public class SurveyListResponse : IDto
     {
         public int Id { get; set; }
+        public DateTime ExpireDate { get; set; }
         public string Name { get; set; }
     }
 }

@@ -8,7 +8,6 @@ namespace SurveyMonkey.DataTransferObject.Response
 {
     public class QuestionLineAnswerReportResponse : IDto
     {
-        public int Id { get; set; }
         public string Text { get; set; }
         public IEnumerable<LineAnswerView> lineAnswers { get; set; }
     }

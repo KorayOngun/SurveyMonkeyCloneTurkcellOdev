@@ -50,14 +50,14 @@ namespace SurveyMonkey.DataAccess.Repos
             return false;
         }
 
-        public async Task<bool> ValidateUser(User user)
+        public async Task<int> ValidateUser(User user)
         {
             var item = await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == user.Password);
             if (item != null)
             {
-                return true;
+                return item.Id;
             }
-            return false;
+            return 0;
         }
     }
 }

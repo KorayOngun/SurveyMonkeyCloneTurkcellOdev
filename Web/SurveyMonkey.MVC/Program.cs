@@ -19,7 +19,7 @@ builder.AddInjection();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(opt =>
 {
     opt.LoginPath = "/User/login";
-
+    opt.AccessDeniedPath = "/";
 });
 
 builder.Services.AddResponseCaching();
@@ -33,6 +33,11 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+using var scope = app.Services.CreateScope();
+var service = scope.ServiceProvider;
+var context = service.GetRequiredService<SurveyMonkeyDbContext>();
+context.Database.EnsureCreated();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

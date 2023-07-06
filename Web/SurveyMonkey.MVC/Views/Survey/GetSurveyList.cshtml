@@ -15,11 +15,13 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th></th>
+            <th>durum</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+    
+        <tr> 
             <td>
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
@@ -29,6 +31,18 @@
             <td>
                 <a asp-action="report" asp-route-id="@item.Id">detay</a>
             </td>
+            @if (item.ExpireDate<DateTime.Now)
+                {
+                    <td>
+                        anket süresi doldu.
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @item.ExpireDate
+                    </td>
+                }
         </tr>
 }
     </tbody>

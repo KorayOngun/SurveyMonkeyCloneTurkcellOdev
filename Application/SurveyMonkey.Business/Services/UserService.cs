@@ -35,7 +35,7 @@ namespace SurveyMonkey.Business.Services
             return false;
         }
 
-        public async Task<bool> Login(UserLoginRequest user)
+        public async Task<int> Login(UserLoginRequest user)
         {
             var u = user.ConvertToEntity<User>(_mapper);
             var result = await _repo.ValidateUser(u);   

@@ -36,6 +36,10 @@ namespace SurveyMonkey.WebApi.Extension
             builder.Services.AddAutoMapper(typeof(MapProfileDto));
             builder.Services.AddAutoMapper(typeof(MapProfileVirtualDto));
 
+           
+        }
+        public static void InitConfig(this WebApplicationBuilder builder)
+        {
             var JwtKey = builder.Configuration.GetValue<string>("JwtKey");
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                              .AddJwtBearer(opt =>

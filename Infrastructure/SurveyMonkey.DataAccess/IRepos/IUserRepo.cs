@@ -9,6 +9,6 @@ namespace SurveyMonkey.DataAccess.IRepos
 {
     public interface IUserRepo : IRepo<User>
     {
-        Task<bool> ValidateUser(User user);
+        Task<int> ValidateUser(User user);
     }
 }

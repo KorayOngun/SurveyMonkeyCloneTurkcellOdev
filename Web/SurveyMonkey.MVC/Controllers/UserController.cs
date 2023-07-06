@@ -26,7 +26,8 @@ namespace SurveyMonkey.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (await _userService.Login(user))
+                var id = await _userService.Login(user);
+                if (id!=0)
                 {
                     Claim[] claims = new Claim[]
                     {

@@ -78,7 +78,7 @@ namespace SurveyMonkey.DataAccess.Repos
 
         public async Task<Survey> GetSurveyForAddAnswerControl(int id)
         {
-            var item = await _context.Surveys.AsNoTracking().Where(s => s.Id == id).Include(s => s.Questions).ThenInclude(q => q.Choices).FirstOrDefaultAsync();
+            var item = await _context.Surveys.AsNoTracking().Where(s => s.Id == id && s.ExpireDate > DateTime.Now).Include(s => s.Questions).ThenInclude(q => q.Choices).FirstOrDefaultAsync();
             return item;
         }
 

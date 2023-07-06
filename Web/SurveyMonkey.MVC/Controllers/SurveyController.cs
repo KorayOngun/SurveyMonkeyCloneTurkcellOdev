@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
 using SurveyMonkey.Business.Helper;
 using SurveyMonkey.Business.IServices;
 using SurveyMonkey.DataTransferObject.Request;
@@ -71,6 +72,36 @@ namespace SurveyMonkey.MVC.Controllers
         }
 
 
+
+
+
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetSurveyList()
+        {
+            var mail = GetMail();
+            var data = await _surveyService.GetSurveysAsync(mail);
+            return View(data);
+            
+        }
+
+        [HttpGet]
+        [Authorize]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any ,NoStore =false, VaryByQueryKeys =new[] {"id"} )]
+        public async Task<IActionResult> Report(int id)
+        {
+            
+            var mail =GetMail();
+            var data = await _surveyReportService.GetReportAsync(id,mail);
+            if (data == default)
+            {
+                return GetErrorPage("anket id'si yanlış veya anket sahibi değilsiniz :(");
+            }
+            return View(data);
+        }
+
+
         [HttpGet]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any, NoStore = false, VaryByQueryKeys = new[] { "id" })]
         public async Task<IActionResult> LineAnswersReport(int id)
@@ -84,30 +115,21 @@ namespace SurveyMonkey.MVC.Controllers
             return Json(data);
         }
 
-
-
-
-        [Authorize]
-        public async Task<IActionResult> GetSurveyList()
+        [HttpGet]
+        public async Task<IActionResult> LineAnswersReportDowload(int id)
         {
             var mail = GetMail();
-            var data = await _surveyService.GetSurveysAsync(mail);
-            return View(data);
-            
-        }
-
-        [Authorize]
-        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any ,NoStore =false, VaryByQueryKeys =new[] {"id"} )]
-        public async Task<IActionResult> Report(int id)
-        {
-            
-            var mail =GetMail();
-            var data = await _surveyReportService.GetReportAsync(id,mail);
+            var data = await _surveyReportService.GetLineAnswerReport(id, mail);
             if (data == default)
             {
                 return GetErrorPage("anket id'si yanlış veya anket sahibi değilsiniz :(");
             }
-            return View(data);
+            var name = "anketRapor.json";
+            var jsonData = JsonConvert.SerializeObject(data);
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(jsonData);
+            var content = new MemoryStream(bytes);
+
+            return File(content, "application/json", name);
         }
 
         private string GetMail()

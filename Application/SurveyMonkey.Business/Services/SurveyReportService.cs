@@ -65,7 +65,6 @@ namespace SurveyMonkey.Business.Services
                     var answers = await _lineAnswerRepo.LineAnswersForReport(question.Id);
                     var item = new QuestionLineAnswerReportResponse
                     {
-                        Id = question.Id,
                         Text = question.Text,
                         lineAnswers = answers.ConvertToVirtualDto<LineAnswerView>(_mapper)
                     };
