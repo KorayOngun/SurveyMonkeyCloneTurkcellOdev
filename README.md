@@ -1,4 +1,4 @@
-# SurveyMonkeyClone Turkcell Odev
+
 [Youtube](https://www.youtube.com/watch?v=XMbY5HVs9a4)
 
 ![My Image](images/DbSchema.JPG)
