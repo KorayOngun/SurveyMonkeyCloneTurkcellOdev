@@ -33,10 +33,10 @@ namespace SurveyMonkey.DataAccess.Context
 
                 entity.HasOne<Answer>()
                       .WithMany(a => a.MultiChoiceAnswer)
-                      .HasForeignKey(e => e.AnswerId).OnDelete(DeleteBehavior.Cascade);
+                      .HasForeignKey(e => e.AnswerId).OnDelete(DeleteBehavior.NoAction);
                 
                 entity.HasOne<Question>().WithMany().HasForeignKey(e => e.QuestionId).OnDelete(DeleteBehavior.Cascade);
-                entity.HasOne<Choice>().WithMany().HasForeignKey(e => e.ChoiceId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne<Choice>().WithMany().HasForeignKey(e => e.ChoiceId).OnDelete(DeleteBehavior.NoAction);
             });
 
 
@@ -46,10 +46,10 @@ namespace SurveyMonkey.DataAccess.Context
 
                 entity.HasOne<Answer>()
                       .WithMany(a => a.SingleChoiceAnswer)
-                      .HasForeignKey(e => e.AnswerId).OnDelete(DeleteBehavior.Cascade);
+                      .HasForeignKey(e => e.AnswerId).OnDelete(DeleteBehavior.NoAction);
 
                 entity.HasOne<Question>().WithMany().HasForeignKey(e => e.QuestionId).OnDelete(DeleteBehavior.Cascade);
-                entity.HasOne<Choice>().WithMany().HasForeignKey(e => e.ChoiceId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne<Choice>().WithMany().HasForeignKey(e => e.ChoiceId).OnDelete(DeleteBehavior.NoAction);
             });
 
             modelBuilder.Entity<Choice>(entity =>
@@ -81,7 +81,7 @@ namespace SurveyMonkey.DataAccess.Context
                 entity.HasKey("QuestionId", "AnswerId");
                 entity.HasOne<Answer>()
                       .WithMany(a => a.lineAnswers)
-                      .HasForeignKey(e => e.AnswerId).OnDelete(DeleteBehavior.Cascade);
+                      .HasForeignKey(e => e.AnswerId).OnDelete(DeleteBehavior.NoAction);
 
                 entity.HasOne<Question>().WithMany().HasForeignKey(e => e.QuestionId).OnDelete(DeleteBehavior.Cascade);
                 

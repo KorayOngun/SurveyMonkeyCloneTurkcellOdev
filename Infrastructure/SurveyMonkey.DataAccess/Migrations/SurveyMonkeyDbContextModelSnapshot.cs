@@ -241,7 +241,7 @@ namespace SurveyMonkey.DataAccess.Migrations
                     b.HasOne("SurveyMonkey.Entities.Answer", null)
                         .WithMany("lineAnswers")
                         .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SurveyMonkey.Entities.Question", null)
@@ -256,13 +256,13 @@ namespace SurveyMonkey.DataAccess.Migrations
                     b.HasOne("SurveyMonkey.Entities.Answer", null)
                         .WithMany("MultiChoiceAnswer")
                         .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SurveyMonkey.Entities.Choice", null)
                         .WithMany()
                         .HasForeignKey("ChoiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SurveyMonkey.Entities.Question", null)
@@ -294,13 +294,13 @@ namespace SurveyMonkey.DataAccess.Migrations
                     b.HasOne("SurveyMonkey.Entities.Answer", null)
                         .WithMany("SingleChoiceAnswer")
                         .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SurveyMonkey.Entities.Choice", null)
                         .WithMany()
                         .HasForeignKey("ChoiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SurveyMonkey.Entities.Question", null)

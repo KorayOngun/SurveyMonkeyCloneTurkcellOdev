@@ -5,30 +5,37 @@
 namespace SurveyMonkey.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class final3 : Migration
+    public partial class final : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_LineAnswers_Questions_QuestionId",
+                name: "FK_LineAnswers_Answers_AnswerId",
                 table: "LineAnswers");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_MultiChoiceAnswers_Choices_ChoiceId",
-                table: "MultiChoiceAnswers");
+                name: "FK_LineAnswers_Questions_QuestionId",
+                table: "LineAnswers");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_MultiChoiceAnswers_Questions_QuestionId",
                 table: "MultiChoiceAnswers");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_SingleChoiceAnswers_Choices_ChoiceId",
+                name: "FK_SingleChoiceAnswers_Answers_AnswerId",
                 table: "SingleChoiceAnswers");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_SingleChoiceAnswers_Questions_QuestionId",
                 table: "SingleChoiceAnswers");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_LineAnswers_Answers_AnswerId",
+                table: "LineAnswers",
+                column: "AnswerId",
+                principalTable: "Answers",
+                principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_LineAnswers_Questions_QuestionId",
@@ -39,14 +46,6 @@ namespace SurveyMonkey.DataAccess.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_MultiChoiceAnswers_Choices_ChoiceId",
-                table: "MultiChoiceAnswers",
-                column: "ChoiceId",
-                principalTable: "Choices",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_MultiChoiceAnswers_Questions_QuestionId",
                 table: "MultiChoiceAnswers",
                 column: "QuestionId",
@@ -55,12 +54,11 @@ namespace SurveyMonkey.DataAccess.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_SingleChoiceAnswers_Choices_ChoiceId",
+                name: "FK_SingleChoiceAnswers_Answers_AnswerId",
                 table: "SingleChoiceAnswers",
-                column: "ChoiceId",
-                principalTable: "Choices",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                column: "AnswerId",
+                principalTable: "Answers",
+                principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_SingleChoiceAnswers_Questions_QuestionId",
@@ -75,24 +73,32 @@ namespace SurveyMonkey.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_LineAnswers_Questions_QuestionId",
+                name: "FK_LineAnswers_Answers_AnswerId",
                 table: "LineAnswers");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_MultiChoiceAnswers_Choices_ChoiceId",
-                table: "MultiChoiceAnswers");
+                name: "FK_LineAnswers_Questions_QuestionId",
+                table: "LineAnswers");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_MultiChoiceAnswers_Questions_QuestionId",
                 table: "MultiChoiceAnswers");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_SingleChoiceAnswers_Choices_ChoiceId",
+                name: "FK_SingleChoiceAnswers_Answers_AnswerId",
                 table: "SingleChoiceAnswers");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_SingleChoiceAnswers_Questions_QuestionId",
                 table: "SingleChoiceAnswers");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_LineAnswers_Answers_AnswerId",
+                table: "LineAnswers",
+                column: "AnswerId",
+                principalTable: "Answers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_LineAnswers_Questions_QuestionId",
@@ -102,13 +108,6 @@ namespace SurveyMonkey.DataAccess.Migrations
                 principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_MultiChoiceAnswers_Choices_ChoiceId",
-                table: "MultiChoiceAnswers",
-                column: "ChoiceId",
-                principalTable: "Choices",
-                principalColumn: "Id");
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_MultiChoiceAnswers_Questions_QuestionId",
                 table: "MultiChoiceAnswers",
                 column: "QuestionId",
@@ -116,11 +115,12 @@ namespace SurveyMonkey.DataAccess.Migrations
                 principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_SingleChoiceAnswers_Choices_ChoiceId",
+                name: "FK_SingleChoiceAnswers_Answers_AnswerId",
                 table: "SingleChoiceAnswers",
-                column: "ChoiceId",
-                principalTable: "Choices",
-                principalColumn: "Id");
+                column: "AnswerId",
+                principalTable: "Answers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_SingleChoiceAnswers_Questions_QuestionId",

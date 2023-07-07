@@ -34,10 +34,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-using var scope = app.Services.CreateScope();
-var service = scope.ServiceProvider;
-var context = service.GetRequiredService<SurveyMonkeyDbContext>();
-context.Database.EnsureCreated();
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

@@ -12,8 +12,8 @@ using SurveyMonkey.DataAccess.Context;
 namespace SurveyMonkey.DataAccess.Migrations
 {
     [DbContext(typeof(SurveyMonkeyDbContext))]
-    [Migration("20230707150258_final2")]
-    partial class final2
+    [Migration("20230707160003_final")]
+    partial class final
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -244,12 +244,13 @@ namespace SurveyMonkey.DataAccess.Migrations
                     b.HasOne("SurveyMonkey.Entities.Answer", null)
                         .WithMany("lineAnswers")
                         .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SurveyMonkey.Entities.Question", null)
                         .WithMany()
                         .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -258,17 +259,19 @@ namespace SurveyMonkey.DataAccess.Migrations
                     b.HasOne("SurveyMonkey.Entities.Answer", null)
                         .WithMany("MultiChoiceAnswer")
                         .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SurveyMonkey.Entities.Choice", null)
                         .WithMany()
                         .HasForeignKey("ChoiceId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SurveyMonkey.Entities.Question", null)
                         .WithMany()
                         .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -294,17 +297,19 @@ namespace SurveyMonkey.DataAccess.Migrations
                     b.HasOne("SurveyMonkey.Entities.Answer", null)
                         .WithMany("SingleChoiceAnswer")
                         .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SurveyMonkey.Entities.Choice", null)
                         .WithMany()
                         .HasForeignKey("ChoiceId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SurveyMonkey.Entities.Question", null)
                         .WithMany()
                         .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
