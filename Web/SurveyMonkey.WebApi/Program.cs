@@ -20,6 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 using var logger =  LoggerFactory.Create(configure => configure.AddSimpleConsole());
 logger.CreateLogger<ResponseTimerMiddleware>();
+logger.CreateLogger<ResponseBodyMiddleware>();
 
 builder.AddInjection();
 builder.InitConfig();
@@ -46,6 +47,7 @@ context.AddQuestionType();
 app.UseHttpsRedirection();
 
 app.UseMiddleware<ResponseTimerMiddleware>();
+app.UseMiddleware<ResponseBodyMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
