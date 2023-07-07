@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SurveyMonkey.DataAccess.IRepos
 {
-    public interface IUserRepo : IRepo<User>
+    public interface IUserRepo : IRepo<User>,IDeletable<User>,IEditable<User>
     {
         Task<int> ValidateUser(User user);
     }

@@ -31,6 +31,16 @@ namespace SurveyMonkey.DataAccess.Repos
             await _context.SaveChangesAsync();
         }
 
+        public void Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public User GetById(int id)
         {
             throw new NotImplementedException();
@@ -48,6 +58,16 @@ namespace SurveyMonkey.DataAccess.Repos
                 return true;
             }
             return false;
+        }
+
+        public void Update(User entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateAsync(User entity)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<int> ValidateUser(User user)

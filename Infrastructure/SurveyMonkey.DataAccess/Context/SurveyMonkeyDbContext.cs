@@ -33,10 +33,10 @@ namespace SurveyMonkey.DataAccess.Context
 
                 entity.HasOne<Answer>()
                       .WithMany(a => a.MultiChoiceAnswer)
-                      .HasForeignKey(e => e.AnswerId).OnDelete(DeleteBehavior.ClientSetNull);
+                      .HasForeignKey(e => e.AnswerId).OnDelete(DeleteBehavior.Cascade);
                 
-                entity.HasOne<Question>().WithMany().HasForeignKey(e => e.QuestionId).OnDelete(DeleteBehavior.ClientSetNull);
-                entity.HasOne<Choice>().WithMany().HasForeignKey(e => e.ChoiceId).OnDelete(DeleteBehavior.ClientSetNull);
+                entity.HasOne<Question>().WithMany().HasForeignKey(e => e.QuestionId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne<Choice>().WithMany().HasForeignKey(e => e.ChoiceId).OnDelete(DeleteBehavior.Cascade);
             });
 
 
@@ -48,8 +48,8 @@ namespace SurveyMonkey.DataAccess.Context
                       .WithMany(a => a.SingleChoiceAnswer)
                       .HasForeignKey(e => e.AnswerId).OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne<Question>().WithMany().HasForeignKey(e => e.QuestionId).OnDelete(DeleteBehavior.ClientSetNull);
-                entity.HasOne<Choice>().WithMany().HasForeignKey(e => e.ChoiceId).OnDelete(DeleteBehavior.ClientSetNull);
+                entity.HasOne<Question>().WithMany().HasForeignKey(e => e.QuestionId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne<Choice>().WithMany().HasForeignKey(e => e.ChoiceId).OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Choice>(entity =>
@@ -68,6 +68,7 @@ namespace SurveyMonkey.DataAccess.Context
             modelBuilder.Entity<Survey>(entity =>
             {
                 entity.HasOne(s => s.User).WithMany(u => u.Survey).HasForeignKey(s => s.UserId).OnDelete(DeleteBehavior.Cascade);
+                
             });
             modelBuilder.Entity<Answer>(entity =>
             {
@@ -82,7 +83,8 @@ namespace SurveyMonkey.DataAccess.Context
                       .WithMany(a => a.lineAnswers)
                       .HasForeignKey(e => e.AnswerId).OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasOne<Question>().WithMany().HasForeignKey(e => e.QuestionId).OnDelete(DeleteBehavior.ClientSetNull);
+                entity.HasOne<Question>().WithMany().HasForeignKey(e => e.QuestionId).OnDelete(DeleteBehavior.Cascade);
+                
             });
 
         }

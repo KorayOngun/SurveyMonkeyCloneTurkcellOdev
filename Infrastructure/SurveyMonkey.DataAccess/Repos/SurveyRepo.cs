@@ -40,6 +40,8 @@ namespace SurveyMonkey.DataAccess.Repos
         public async Task DeleteAsync(int id)
         {
             var item = await _context.Surveys.FindAsync(id);
+     
+            
             _context.Surveys.Remove(item);
             await _context.SaveChangesAsync();
         }
@@ -91,6 +93,7 @@ namespace SurveyMonkey.DataAccess.Repos
 
         public async Task<bool> isExist(Expression<Func<Survey, bool>> predicate)
         {
+           
             if (await _context.Surveys.AnyAsync(predicate))
             {
                 return true;

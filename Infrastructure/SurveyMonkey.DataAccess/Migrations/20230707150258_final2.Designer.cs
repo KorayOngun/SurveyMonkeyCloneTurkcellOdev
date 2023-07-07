@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SurveyMonkey.DataAccess.Context;
 
@@ -11,9 +12,11 @@ using SurveyMonkey.DataAccess.Context;
 namespace SurveyMonkey.DataAccess.Migrations
 {
     [DbContext(typeof(SurveyMonkeyDbContext))]
-    partial class SurveyMonkeyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230707150258_final2")]
+    partial class final2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -247,7 +250,6 @@ namespace SurveyMonkey.DataAccess.Migrations
                     b.HasOne("SurveyMonkey.Entities.Question", null)
                         .WithMany()
                         .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -262,13 +264,11 @@ namespace SurveyMonkey.DataAccess.Migrations
                     b.HasOne("SurveyMonkey.Entities.Choice", null)
                         .WithMany()
                         .HasForeignKey("ChoiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SurveyMonkey.Entities.Question", null)
                         .WithMany()
                         .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -300,13 +300,11 @@ namespace SurveyMonkey.DataAccess.Migrations
                     b.HasOne("SurveyMonkey.Entities.Choice", null)
                         .WithMany()
                         .HasForeignKey("ChoiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SurveyMonkey.Entities.Question", null)
                         .WithMany()
                         .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
