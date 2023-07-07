@@ -22,7 +22,7 @@ using var logger =  LoggerFactory.Create(configure => configure.AddSimpleConsole
 logger.CreateLogger<ResponseTimerMiddleware>();
 
 builder.AddInjection();
-
+builder.InitConfig();
 
 
 

@@ -11,6 +11,8 @@ namespace SurveyMonkey.Business.IServices
     {
         Task<SurveyReportResponse> GetReportAsync(int id, string userMail);
         Task<IEnumerable<QuestionLineAnswerReportResponse>> GetLineAnswerReport(int id, string email);
+        Task<MemoryStream> GetLineAnswerReportMemStream(int id, string email);
+
 
     }
 }

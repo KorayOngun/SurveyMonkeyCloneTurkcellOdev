@@ -8,5 +8,6 @@ namespace SurveyMonkey.DataTransferObject
 {
     public interface IVirtualDto
     {
+        // response veya request class'ları içinde kullanılan, tek başına kullanılmayan classlar.
     }
 }

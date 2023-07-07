@@ -53,9 +53,9 @@ namespace SurveyMonkey.WebApi.Controllers
         [Authorize]
         public async Task<IActionResult> Create(SurveyCreateRequest survey)
         {
-            var id = await  _surveyService.CreateSurveyAsync(survey);
             var userId = Convert.ToInt32(HttpContext.Request.Headers.GetAuthorizationValues(JwtRegisteredClaimNames.UniqueName));
             survey.UserId = userId;
+            var id = await  _surveyService.CreateSurveyAsync(survey);          
             var MvcPath = _configuration.GetValue<string>("MvcUrl");
             string path = MvcPath + id.ToString();
             return Created(path, survey);

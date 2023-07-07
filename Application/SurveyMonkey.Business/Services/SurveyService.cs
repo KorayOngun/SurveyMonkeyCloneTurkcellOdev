@@ -69,6 +69,18 @@ namespace SurveyMonkey.Business.Services
             var item = await _repo.GetByIdAsync(id);
             return item.ConvertToDto<SurveyResponse>(_mapper);
         }
+        public async Task DeleteSurvey(int surveyId, string mail)
+        {
+           var condition= await _repo.isExist(s=>s.Id== surveyId && s.User.Email==mail);
+            if (condition)
+            {
+                await _repo.DeleteAsync(surveyId);
+            }
+            else
+            {
+                throw new Exception(message:"anket bulunamadı");
+            }
+        }
 
         private async Task<bool> controlSurveyForAnswer(Survey survey, AnswerRequest answer)
         {
@@ -105,5 +117,7 @@ namespace SurveyMonkey.Business.Services
             var result = surveys.ConvertToDtoEnurable<SurveyListResponse>(_mapper);
             return result;
         }
+
+   
     }
 }

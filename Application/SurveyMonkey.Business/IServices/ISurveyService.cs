@@ -18,5 +18,6 @@ namespace SurveyMonkey.Business.IServices
         Task AddAnswer(AnswerRequest answer);
 
         Task<IEnumerable<SurveyListResponse>> GetSurveysAsync(string userMail);
+        Task DeleteSurvey(int surveyId,string mail);    
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
-
+using System.Text;
 namespace SurveyMonkey.WebApi.Extension
 {
     public static class RequestHeader
@@ -18,8 +18,8 @@ namespace SurveyMonkey.WebApi.Extension
                 token += "=";
             }
             
-            var base64 = System.Convert.FromBase64String(token);
-            var data = System.Text.Encoding.UTF8.GetString(base64);
+            var base64 = Convert.FromBase64String(token);
+            var data = Encoding.UTF8.GetString(base64);
             var dic = JsonConvert.DeserializeObject<Dictionary<string, string>>(data);
             return dic[jwt];
         }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json;
 using SurveyMonkey.Business.Extensions;
 using SurveyMonkey.Business.Helper;
 using SurveyMonkey.Business.IServices;
@@ -12,6 +13,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SurveyMonkey.Business.Services
 {
@@ -52,6 +54,16 @@ namespace SurveyMonkey.Business.Services
             stopwatch.Stop();
             report.Stopwatch = stopwatch;
             return report;
+        }
+
+        public async Task<MemoryStream> GetLineAnswerReportMemStream(int id, string email)
+        {
+            Survey survey = await _repo.GetByIdForReportAsync(id, email);
+            IEnumerable<QuestionLineAnswerReportResponse> data = await getQuestionLineAnswerReport(survey);
+            var jsonData = JsonConvert.SerializeObject(data);
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(jsonData);
+            var content = new MemoryStream(bytes);
+            return content;
         }
 
 
@@ -135,5 +147,7 @@ namespace SurveyMonkey.Business.Services
             };
             return survey;
         }
+
+        
     }
 }

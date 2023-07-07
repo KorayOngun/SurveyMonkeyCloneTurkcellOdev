@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurveyMonkey.DataTransferOb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurveyMonkey.WebApi", "Web\SurveyMonkey.WebApi\SurveyMonkey.WebApi.csproj", "{DE97C452-DDE1-4399-BB77-F30C2574518C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurveyMonkey.Business", "Application\SurveyMonkey.Business\SurveyMonkey.Business.csproj", "{FE3C0CF9-6218-4C62-9415-1EBC14E788D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurveyMonkey.Services", "Application\SurveyMonkey.Business\SurveyMonkey.Services.csproj", "{FE3C0CF9-6218-4C62-9415-1EBC14E788D4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SurveyMonkey.MVC", "Web\SurveyMonkey.MVC\SurveyMonkey.MVC.csproj", "{1B237C6E-BDAB-4525-8CA1-24464907B0D0}"
 EndProject

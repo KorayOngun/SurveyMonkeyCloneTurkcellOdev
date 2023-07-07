@@ -85,6 +85,15 @@ namespace SurveyMonkey.MVC.Controllers
             return View(data);
             
         }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> DeleteSurvey(int id)
+        {
+            var mail = GetMail();
+            await _surveyService.DeleteSurvey(id,mail);
+            return RedirectToAction(nameof(GetSurveyList));
+
+        }
 
         [HttpGet]
         [Authorize]
@@ -119,17 +128,13 @@ namespace SurveyMonkey.MVC.Controllers
         public async Task<IActionResult> LineAnswersReportDowload(int id)
         {
             var mail = GetMail();
-            var data = await _surveyReportService.GetLineAnswerReport(id, mail);
+            var data = await _surveyReportService.GetLineAnswerReportMemStream(id, mail);
             if (data == default)
             {
                 return GetErrorPage("anket id'si yanlış veya anket sahibi değilsiniz :(");
             }
-            var name = "anketRapor.json";
-            var jsonData = JsonConvert.SerializeObject(data);
-            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(jsonData);
-            var content = new MemoryStream(bytes);
 
-            return File(content, "application/json", name);
+            return File(data, "application/json", "anketRapor.json");
         }
 
         private string GetMail()
